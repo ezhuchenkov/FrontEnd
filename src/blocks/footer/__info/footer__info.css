@@ -1,0 +1,22 @@
+.footer__info {
+  margin: 0;
+  padding-left: 104px;
+  color: #b6bcbf;
+  font-size: 1rem;
+  width: 20%;
+}
+
+@media screen and (max-width: 1023px) {
+  .footer__info {
+    padding-left: 40px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .footer__info {
+    order: 3;
+    width: 100%;
+    padding: 0;
+    margin-top: 20px;
+  }
+}

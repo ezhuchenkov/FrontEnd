@@ -1,0 +1,26 @@
+.carousel__carousel-cell {
+  width: 400px;
+  height: 288px;
+  margin: 0px 16px;
+  border-radius: 5px;
+  opacity: 0.5;
+}
+
+@media screen and (max-width: 1023px) {
+  .carousel__carousel-cell {
+    height: 242px;
+    width: 336px;
+    margin: 0px 8px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .carousel__carousel-cell {
+    height: 264px;
+    width: 288px;
+    margin: 0px 8px;
+  }
+}
+.carousel__carousel-cell.is-selected {
+  opacity: 1;
+}

@@ -1,0 +1,24 @@
+
+.results__news {
+  background-color: #F5F6F7;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 16px;
+  row-gap: 16px;
+  margin-top: 64px;
+}
+
+@media screen and (max-width: 1023px) {
+  .results__news {
+    column-gap: 8px;
+    row-gap: 8px;
+    margin-top: 32px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .results__news {
+    grid-template-columns: 1fr;
+    margin-top: 24px;
+  }
+}

@@ -1,0 +1,18 @@
+@import url(./__text/clients__text.css);
+
+.clients {
+  padding: 80px 104px 72px;
+  background-color: white;
+}
+
+@media screen and (max-width: 1439px) {
+  .clients {
+    padding: 30px 40px 40px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .clients {
+    padding: 16px 16px 37px;
+  }
+}

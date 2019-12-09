@@ -6,7 +6,7 @@
 @import url(./__commit-person/carousel__commit-person.css);
 @import url(./__commit-text/carousel__commit-text.css);
 @import url(./__carousel-cell/carousel__carousel-cell.css);
-@import url(./__git-button/carousel__git-button.css);
+@import url(./__git-button/carousel__button.css);
 .carousel {
   background: #F5F6F7;
 }

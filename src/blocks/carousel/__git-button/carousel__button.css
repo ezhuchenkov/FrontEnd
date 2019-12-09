@@ -1,4 +1,4 @@
-.button.carousel__git-button {
+.button.carousel__button {
   display: none;
   width: 100%;
   border: 1px solid black;
@@ -10,12 +10,12 @@
   font-weight: 900;
 }
 
-.button.carousel__git-button:hover {
+.button.carousel__button:hover {
   background-color: white;
 }
 
 @media screen and (max-width: 424px) {
-  .button.carousel__git-button {
+  .button.carousel__button {
     width: 288px;
     display: block;
   }

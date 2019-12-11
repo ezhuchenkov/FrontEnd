@@ -1,0 +1,28 @@
+.author__photo {
+  width: 464px;
+  height: 464px;
+  min-width: 464px;
+  min-height: 464px;
+  margin-right: 56px;
+  border-radius: 50%;
+}
+
+@media screen and (max-width: 1023px) {
+  .author__photo {
+    width: 232px;
+    height: 232px;
+    min-width: 232px;
+    min-height: 232px;
+    margin-right: 32px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .author__photo {
+    width: 60%;
+    height: 60%;
+    margin: 0 auto 24px;
+    min-width: 272px;
+    min-height: 272px;
+  }
+}

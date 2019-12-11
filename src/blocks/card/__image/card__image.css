@@ -1,0 +1,22 @@
+.card__image {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: url(../../../images/bg.png);
+  height: 272px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  position: relative;
+}
+
+@media screen and (max-width: 1023px) {
+  .card__image {
+    height: 150px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .card__image {
+    height: 196px;
+  }
+}

@@ -1,0 +1,17 @@
+.author__text-container {
+  margin-top: 24px;
+  min-width: 600px;
+}
+
+@media screen and (max-width: 1439px) {
+  .author__text-container {
+    margin-top: 16px;
+    min-width: 424px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .author__text-container {
+    min-width: 288px;
+  }
+}

@@ -1,0 +1,7 @@
+.card__icon.card__icon_add {
+  background-image: url(../../../../images/icons/card-icons/marked.svg);
+}
+
+.card__icon.card__icon_add:hover ~ .card__popup {
+  opacity: 0;
+}

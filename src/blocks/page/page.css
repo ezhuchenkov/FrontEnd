@@ -1,0 +1,19 @@
+.page {
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1440px;
+  color: black;
+  background-color: white;
+  min-height: 100vh;
+  min-width: 320px;
+  font-family: "Roboto", sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+.page::-webkit-scrollbar { width: 0 !important }
+.page { -ms-overflow-style: none; }
+.page { overflow: -moz-scrollbars-none; }

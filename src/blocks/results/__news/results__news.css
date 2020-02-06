@@ -2,7 +2,7 @@
 .results__news {
   background-color: #F5F6F7;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 30%);
   column-gap: 16px;
   row-gap: 16px;
   margin-top: 64px;
@@ -18,7 +18,7 @@
 
 @media screen and (max-width: 767px) {
   .results__news {
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
     margin-top: 24px;
   }
 }

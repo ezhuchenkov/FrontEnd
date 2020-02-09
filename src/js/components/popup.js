@@ -2,9 +2,11 @@
 /* eslint-disable class-methods-use-this */
 import '../../blocks/popup/popup.css'
 import Overlay from './overlay'
+import { SIGNUP, SIGNIN } from '../constants/config'
+
 
 export default class Popup {
-  constructor(popupID, mainApi) {
+  constructor(popupID, mainApi, header) {
     this.open = this.open.bind(this)
     this.generateError = this.generateError.bind(this)
     this.close = this.close.bind(this)
@@ -14,9 +16,10 @@ export default class Popup {
     this.popupClose = this.popupID.querySelector('.auth-form__close')
     this.overlay = new Overlay()
     this.mainApi = mainApi
+    this.popupName = this.popupID.id
+    this.header = header
 
-    const popupName = this.popupID.id
-    this.form = document.forms[popupName]
+    this.form = document.forms[this.popupName]
     this.inputs = []
     this.submitButton = this.form.querySelector('.button')
     Array.from(this.form.elements)
@@ -47,25 +50,33 @@ export default class Popup {
 
   submit(event) {
     event.preventDefault()
-    if (this.popupID.id === 'signUp') {
-      const data = {
-        name: this.inputs[2].value,
-        email: this.inputs[0].value,
-        password: this.inputs[1].value,
-      }
-      this.mainApi(data)
+    if (this.popupName === SIGNUP) {
+      this.singUpSubmit()
     }
-    if (this.popupID.id === 'signIn') {
-      const data = {
-        email: this.inputs[0].value,
-        password: this.inputs[1].value,
-      }
-      this.mainApi(data)
-        .then((result) => {
-          localStorage.setItem('token', result.jwt)
-          this.close()
-        })
+    if (this.popupName === SIGNIN) {
+      this.singInSubmit()
     }
+  }
+
+  singUpSubmit() {
+    const data = {
+      name: this.inputs[2].value,
+      email: this.inputs[0].value,
+      password: this.inputs[1].value,
+    }
+    this.mainApi(data)
+  }
+
+  singInSubmit() {
+    const data = {
+      email: this.inputs[0].value,
+      password: this.inputs[1].value,
+    }
+    this.mainApi(data)
+      .then((res) => {
+        this.header({ isLoggedIn: true, name: res.name })
+      })
+    this.close()
   }
 
   submitButtonDisabler() {

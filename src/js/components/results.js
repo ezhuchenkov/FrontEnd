@@ -4,22 +4,22 @@ import CardList from './cardList'
 import { resultSection, headerForm } from '../constants/config'
 
 export default class Results {
-  constructor(getNews) {
+  constructor(apiMethod) {
     this.resultSection = resultSection
     this.headerForm = headerForm
-    this.inputArea = this.headerForm.querySelector('.header__form-input')
-    this.findButton = this.headerForm.querySelector('.button')
+    // this.inputArea = this.headerForm.querySelector('.header__form-input')
+    // this.findButton = this.headerForm.querySelector('.button')
     this.isResults = this.isResults.bind(this)
     this.noResults = this.noResults.bind(this)
     this.preloader = new Preloader()
     this.cardList = new CardList()
     this.news = []
-    this.getNews = getNews
+    this.apiMethod = apiMethod
     // this.saveArticle = saveArticle
     this.counter = 3
     this.showMoreNewsLimiter = 3
 
-    this.headerForm.addEventListener('submit', (event) => this.takeNews(event))
+    // this.headerForm.addEventListener('submit', (event) => this.takeNews(event))
   }
 
   isResults() {
@@ -92,7 +92,7 @@ export default class Results {
     this.preloader.noNewsOff()
     this.preloader.errorOff()
     this.cleanResults()
-    this.getNews(request).then((data) => {
+    this.apiMethod(request).then((data) => {
       this.news = data
       if (data.length === 0) {
         this.preloader.noNewsOn()
@@ -121,9 +121,24 @@ export default class Results {
     for (let i = 0; i < volume; i += 1) {
       this.cardList.addCard(this.news[this.counter].source, this.news[this.counter].title,
         this.news[this.counter].date, this.news[this.counter].text,
-        this.news[this.counter].image, this.news[this.counter].link,
-        this.news[this.counter].keyword)
+        this.news[this.counter].image, this.news[this.counter].link)
       this.counter += 1
     }
+  }
+
+  renderArticles() {
+    this.apiMethod().then((data) => {
+      if (data.length === 0) {
+        this.noResults()
+      } else {
+        for (let i = 0; i < data.length; i += 1) {
+          this.cardList.addArticle(data[i].source, data[i].title, data[i].date,
+            data[i].text, data[i].image, data[i].link, data[i].keyword)
+        }
+      }
+    })
+      .catch((err) => {
+        console.log(err.message)
+      })
   }
 }

@@ -5,13 +5,20 @@ export const calculationDate = new Date(new Date() - (7 * 24 * 3600 * 1000))
 export const pageSize = 'pageSize=100'
 export const langOption = 'lang=ru&'
 
-
 // DOM-elemets configuration
 export const resultSection = document.querySelector('.results')
 export const headerForm = document.querySelector('.header__form')
 export const container = document.querySelector('.results__news')
 
-
 // BackEnd configuration
 export const signUpUrl = 'http://localhost:3000/signup'
 export const signInUrl = 'http://localhost:3000/signin'
+export const getArticlesUrl = 'http://localhost:3000/articles'
+export const getUserInfoUrl = 'http://localhost:3000/users/me'
+
+// constants
+export const MAIN_PAGE = 'mainPage'
+export const ABOUT = 'about'
+export const ARTICLES = 'articles'
+export const SIGNUP = 'signUp'
+export const SIGNIN = 'signIn'

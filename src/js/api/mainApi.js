@@ -1,9 +1,13 @@
-import { signUpUrl, signInUrl } from '../constants/config'
+import {
+  signUpUrl, signInUrl, getArticlesUrl, getUserInfoUrl,
+} from '../constants/config'
 
 export default class MainApi {
   constructor() {
     this.signUpUrl = signUpUrl
     this.signInUrl = signInUrl
+    this.getArticlesUrl = getArticlesUrl
+    this.getUserInfoUrl = getUserInfoUrl
   }
 
 
@@ -49,6 +53,37 @@ export default class MainApi {
       })
   }
 
+  getArticles() {
+    return fetch(this.getArticlesUrl,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors',
+        credentials: 'include',
+      })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Ошибка чтения карточек ${res.status}`)
+        return res.json()
+      })
+      .catch((err) => {
+        throw new Error(err.message)
+      })
+  }
+
+  getUserInfo() {
+    return fetch(this.getUserInfoUrl, { credentials: 'include' })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Ошибка чтения ${res.status}`)
+        return res.json()
+      })
+      .then((userInfo) => userInfo.user)
+      .catch((err) => {
+        throw new Error(err.message)
+      })
+  }
+
   // saveArticle(data) {
   //   return fetch(this.articles,
   //     {
@@ -89,24 +124,6 @@ export default class MainApi {
   //     })
   // }
 
-  // getArticles() {
-  //   return fetch(this.articles,
-  //     {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       mode: 'cors',
-  //       credentials: 'include',
-  //     })
-  //     .then((res) => {
-  //       if (!res.ok) throw new Error(`Ошибка чтения карточек ${res.status}`)
-  //       return res.json()
-  //     })
-  //     .catch((err) => {
-  //       throw new Error(err.message)
-  //     })
-  // }
 
   // logout() {
   //   return fetch(this.logout,
@@ -124,19 +141,6 @@ export default class MainApi {
   //     })
   //     .catch((e) => {
   //       throw new Error(e.message)
-  //     })
-  // }
-
-
-  // getUserData() {
-  //   return fetch(this.getUser, { credentials: 'include' })
-  //     .then((res) => {
-  //       if (!res.ok) throw new Error(`Ошибка чтения ${res.status}`)
-  //       return res.json()
-  //     })
-  //     .then((userInfo) => userInfo.user)
-  //     .catch((err) => {
-  //       throw new Error(err.message)
   //     })
   // }
 }

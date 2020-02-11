@@ -4,6 +4,7 @@ import NewsApi from '../api/newsApi'
 import Results from './results'
 import MainApi from '../api/mainApi'
 import Header from './header'
+import { MAIN_PAGE, ARTICLES } from '../constants/config'
 
 export default class Page {
   constructor(options) {
@@ -11,8 +12,12 @@ export default class Page {
     this.header = new Header(this.options)
     this.newsApi = new NewsApi()
     this.mainApi = new MainApi()
-    this.results = new Results(this.newsApi.getNews.bind(this.newsApi))
-    this.resultTest = new Results(this.mainApi.getArticles.bind(this.mainApi)).renderArticles()
+    if (this.options.pageName === MAIN_PAGE) {
+      this.results = new Results(this.newsApi.getNews.bind(this.newsApi))
+    }
+    if (this.options.pageName === ARTICLES) {
+      this.results = new Results(this.mainApi.getArticles.bind(this.mainApi)).renderArticles()
+    }
     this.popupRegistration = new Popup(
       options.popupRegistration,
       this.mainApi.signUp.bind(this.mainApi),
@@ -31,6 +36,7 @@ export default class Page {
     this.addLiteners()
   }
 
+  // добавить функцию addlistener
   addLiteners() {
     document.querySelector('.menu__link_logged').addEventListener('click', (event) => {
       this.popupRegistration.open(event)

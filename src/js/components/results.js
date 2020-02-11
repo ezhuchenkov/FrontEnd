@@ -7,8 +7,11 @@ export default class Results {
   constructor(apiMethod) {
     this.resultSection = resultSection
     this.headerForm = headerForm
-    // this.inputArea = this.headerForm.querySelector('.header__form-input')
-    // this.findButton = this.headerForm.querySelector('.button')
+    if (this.headerForm) {
+      this.inputArea = this.headerForm.querySelector('.header__form-input')
+      this.findButton = this.headerForm.querySelector('.button')
+      this.headerForm.addEventListener('submit', (event) => this.takeNews(event))
+    }
     this.isResults = this.isResults.bind(this)
     this.noResults = this.noResults.bind(this)
     this.preloader = new Preloader()
@@ -18,8 +21,6 @@ export default class Results {
     // this.saveArticle = saveArticle
     this.counter = 3
     this.showMoreNewsLimiter = 3
-
-    // this.headerForm.addEventListener('submit', (event) => this.takeNews(event))
   }
 
   isResults() {
@@ -93,7 +94,17 @@ export default class Results {
     this.preloader.errorOff()
     this.cleanResults()
     this.apiMethod(request).then((data) => {
-      this.news = data
+      for (let i = 0; i < data.articles.length; i += 1) {
+        this.news.push({
+          source: data.articles[i].source.name,
+          title: data.articles[i].title,
+          date: new Date(Date.parse(data.articles[i].publishedAt)),
+          text: data.articles[i].description,
+          image: data.articles[i].urlToImage,
+          link: data.articles[i].url,
+          keyword: request,
+        })
+      }
       if (data.length === 0) {
         this.preloader.noNewsOn()
         this.noResults()
@@ -101,7 +112,7 @@ export default class Results {
         this.isResults()
         for (let i = 0; i < 3; i += 1) {
           this.cardList.addCard(this.news[i].source, this.news[i].title, this.news[i].date,
-            this.news[i].text, this.news[i].image, this.news[i].link, this.news[i].keyword)
+            this.news[i].text, this.news[i].image, this.news[i].link)
         }
         this.preloader.circleOff()
         this.enableForm()
@@ -128,10 +139,19 @@ export default class Results {
 
   renderArticles() {
     this.apiMethod().then((data) => {
+      console.log(data)
       if (data.length === 0) {
         this.noResults()
       } else {
+        // Array.prototype.slice.apply(data).forEach((item) => {
+        //   console.log(item)
+        //   this.cardList.addArticle(item.source, item.title, item.date,
+        //     item.text, item.image, item.link, item.keyword)
+        // })
+        // console.log(Array.prototype.slice.apply(data).length)
+        // console.log([...data].length)
         for (let i = 0; i < data.length; i += 1) {
+          console.log(i)
           this.cardList.addArticle(data[i].source, data[i].title, data[i].date,
             data[i].text, data[i].image, data[i].link, data[i].keyword)
         }

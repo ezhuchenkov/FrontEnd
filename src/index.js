@@ -2,10 +2,11 @@
 import './vendor/normalize.css'
 import './index.css'
 import Page from './js/components/page'
+import Results from './js/components/results'
 
 new Page(
   {
-    pageName: 'about',
+    pageName: 'mainPage',
     color: 'white',
     articlesLinkAdress: '../articles/',
     popupRegistration: document.querySelector('#signUp'),
@@ -14,7 +15,6 @@ new Page(
 
   },
 ).render()
-
 // const menu = new Menu(
 //   {
 //     control: '.menu__mobile',

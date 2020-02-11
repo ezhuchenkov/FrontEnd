@@ -24,21 +24,6 @@ export default class NewsApi {
         }
         return Promise.reject(new Error(`Ошибка: ${res.status}`))
       })
-      .then((data) => {
-        const news = []
-        for (let i = 0; i < data.articles.length; i += 1) {
-          news.push({
-            source: data.articles[i].source.name,
-            title: data.articles[i].title,
-            date: new Date(Date.parse(data.articles[i].publishedAt)),
-            text: data.articles[i].description,
-            image: data.articles[i].urlToImage,
-            link: data.articles[i].url,
-            keyword: request,
-          })
-        }
-        return news
-      })
       .catch((err) => {
         throw new Error(`Ошибка: ${err.message}`)
       })

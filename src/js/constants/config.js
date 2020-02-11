@@ -18,7 +18,6 @@ export const getUserInfoUrl = 'http://localhost:3000/users/me'
 
 // constants
 export const MAIN_PAGE = 'mainPage'
-export const ABOUT = 'about'
 export const ARTICLES = 'articles'
 export const SIGNUP = 'signUp'
 export const SIGNIN = 'signIn'

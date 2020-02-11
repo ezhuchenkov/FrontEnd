@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const WebpackMd5Hash = require('webpack-md5-hash')
@@ -9,7 +10,6 @@ const webpack = require('webpack')
 module.exports = {
   entry: {
     main: './src/index.js',
-    about: './src/pages/about/index.js',
     articles: './src/pages/articles/index.js',
   },
   output: {
@@ -31,7 +31,7 @@ module.exports = {
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: { publicPath: '../', }
+            options: { publicPath: '../' },
           },
           {
             loader: 'css-loader',
@@ -41,8 +41,8 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               config: {
-                path: __dirname + '/postcss.config.js'
-              }
+                path: `${__dirname}/postcss.config.js`,
+              },
             },
           },
         ],
@@ -87,9 +87,9 @@ module.exports = {
       assetNameRegExp: /\.css$/g,
       cssProcessor: require('cssnano'),
       cssProcessorPluginOptions: {
-        preset: ['default', { discardComments: { removeAll: true } }]
+        preset: ['default', { discardComments: { removeAll: true } }],
       },
-      canPrint: true
+      canPrint: true,
     }),
     new HtmlWebpackPlugin({
       inject: false,
@@ -102,12 +102,6 @@ module.exports = {
       hash: true,
       template: './src/pages/articles/index.html',
       filename: 'articles/index.html',
-    }),
-    new HtmlWebpackPlugin({
-      inject: false,
-      hash: true,
-      template: './src/pages/about/index.html',
-      filename: 'about/index.html',
     }),
     new WebpackMd5Hash(),
     new webpack.DefinePlugin({

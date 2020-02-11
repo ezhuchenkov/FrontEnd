@@ -55,20 +55,13 @@ export default class MainApi {
 
   getArticles() {
     return fetch(this.getArticlesUrl,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        mode: 'cors',
-        credentials: 'include',
-      })
+      { credentials: 'include' })
       .then((res) => {
         if (!res.ok) throw new Error(`Ошибка чтения карточек ${res.status}`)
         return res.json()
-      })
-      .catch((err) => {
-        throw new Error(err.message)
+          .catch((err) => {
+            throw new Error(err.message)
+          })
       })
   }
 

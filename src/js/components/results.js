@@ -4,9 +4,11 @@ import CardList from './cardList'
 import { resultSection, headerForm } from '../constants/config'
 
 export default class Results {
-  constructor(apiMethod) {
+  constructor(apiMethod, options, title) {
     this.resultSection = resultSection
     this.headerForm = headerForm
+    this.options = options
+    this.title = title
     if (this.headerForm) {
       this.inputArea = this.headerForm.querySelector('.header__form-input')
       this.findButton = this.headerForm.querySelector('.button')
@@ -18,7 +20,6 @@ export default class Results {
     this.cardList = new CardList()
     this.news = []
     this.apiMethod = apiMethod
-    // this.saveArticle = saveArticle
     this.counter = 3
     this.showMoreNewsLimiter = 3
   }
@@ -110,9 +111,10 @@ export default class Results {
         this.noResults()
       } else {
         this.isResults()
-        for (let i = 0; i < 3; i += 1) {
+        for (let i = 0; i < this.counter; i += 1) {
           this.cardList.addCard(this.news[i].source, this.news[i].title, this.news[i].date,
-            this.news[i].text, this.news[i].image, this.news[i].link)
+            this.news[i].text, this.news[i].image, this.news[i].link,
+            this.news[i].keyword, this.options)
         }
         this.preloader.circleOff()
         this.enableForm()
@@ -132,29 +134,21 @@ export default class Results {
     for (let i = 0; i < volume; i += 1) {
       this.cardList.addCard(this.news[this.counter].source, this.news[this.counter].title,
         this.news[this.counter].date, this.news[this.counter].text,
-        this.news[this.counter].image, this.news[this.counter].link)
+        this.news[this.counter].image, this.news[this.counter].link,
+        this.news[this.counter].keyword, this.options)
       this.counter += 1
     }
   }
 
   renderArticles() {
     this.apiMethod().then((data) => {
-      console.log(data)
-      if (data.length === 0) {
+      if (data.data.length === 0) {
         this.noResults()
       } else {
-        // Array.prototype.slice.apply(data).forEach((item) => {
-        //   console.log(item)
-        //   this.cardList.addArticle(item.source, item.title, item.date,
-        //     item.text, item.image, item.link, item.keyword)
-        // })
-        // console.log(Array.prototype.slice.apply(data).length)
-        // console.log([...data].length)
-        for (let i = 0; i < data.length; i += 1) {
-          console.log(i)
-          this.cardList.addArticle(data[i].source, data[i].title, data[i].date,
-            data[i].text, data[i].image, data[i].link, data[i].keyword)
-        }
+        Array.prototype.slice.apply(data.data).forEach((item) => {
+          this.cardList.addArticle(item._id, item.source, item.title, item.date,
+            item.text, item.image, item.link, item.keyword, this.options, this.title)
+        })
       }
     })
       .catch((err) => {

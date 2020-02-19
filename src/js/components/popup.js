@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-useless-escape */
 /* eslint-disable class-methods-use-this */
 import '../../blocks/popup/popup.css'
@@ -74,6 +75,7 @@ export default class Popup {
     }
     this.mainApi(data)
       .then((res) => {
+        localStorage && localStorage.setItem('user', res.name)
         this.header({ isLoggedIn: true, name: res.name })
       })
     this.close()

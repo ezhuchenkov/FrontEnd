@@ -13,8 +13,9 @@ export const container = document.querySelector('.results__news')
 // BackEnd configuration
 export const signUpUrl = 'http://localhost:3000/signup'
 export const signInUrl = 'http://localhost:3000/signin'
-export const getArticlesUrl = 'http://localhost:3000/articles'
+export const articlesUrl = 'http://localhost:3000/articles'
 export const getUserInfoUrl = 'http://localhost:3000/users/me'
+export const logoutUrl = 'http://localhost:3000/logout'
 
 // constants
 export const MAIN_PAGE = 'mainPage'

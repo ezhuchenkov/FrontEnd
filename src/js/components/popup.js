@@ -3,7 +3,7 @@
 /* eslint-disable class-methods-use-this */
 import '../../blocks/popup/popup.css'
 import Overlay from './overlay'
-import { SIGNUP, SIGNIN } from '../constants/config'
+import { SIGNUP, SIGNIN, domElements } from '../constants/config'
 
 
 export default class Popup {
@@ -14,7 +14,7 @@ export default class Popup {
     this.submit = this.submit.bind(this)
     this.validate = this.validate.bind(this)
     this.popupID = popupID
-    this.popupClose = this.popupID.querySelector('.auth-form__close')
+    this.popupClose = this.popupID.querySelector(`.${domElements.authForm.close}`)
     this.overlay = new Overlay()
     this.mainApi = mainApi
     this.popupName = this.popupID.id
@@ -22,17 +22,17 @@ export default class Popup {
 
     this.form = document.forms[this.popupName]
     this.inputs = []
-    this.submitButton = this.form.querySelector('.button')
+    this.submitButton = this.form.querySelector(`.${domElements.button}`)
     Array.from(this.form.elements)
       .forEach((element) => {
-        if (element.classList.contains('auth-form__input')) {
+        if (element.classList.contains(domElements.authForm.input)) {
           this.inputs.push(element)
         }
       })
   }
 
   open() {
-    this.popupID.classList.remove('popup_hide')
+    this.popupID.classList.remove(domElements.popups.popupHide)
     document.querySelector('#mobile-menu').style.display = 'none'
     this.overlay.on()
     this.popupClose.addEventListener('click', this.close)
@@ -43,7 +43,7 @@ export default class Popup {
   }
 
   close() {
-    this.popupID.classList.add('popup_hide')
+    this.popupID.classList.add(domElements.popups.popupHide)
     document.querySelector('#mobile-menu').style.display = 'block'
     this.overlay.off()
     this.popupClose.removeEventListener('click', this.close)
@@ -91,13 +91,13 @@ export default class Popup {
 
   generateError(text) {
     const error = document.createElement('span')
-    error.className = 'auth-form__error-message'
+    error.className = domElements.authForm.errorMessage
     error.innerHTML = text
     return error
   }
 
   removeValidation() {
-    const errors = this.form.querySelectorAll('.auth-form__error-message')
+    const errors = this.form.querySelectorAll(`.${domElements.authForm.errorMessage}`)
     for (let i = 0; i < errors.length; i += 1) {
       errors[i].remove()
     }
@@ -115,7 +115,7 @@ export default class Popup {
   lengthChecker() {
     for (let i = 0; i < this.inputs.length; i += 1) {
       if (!this.inputs[i].value || this.inputs[i].value.length === 0) {
-        const error = this.generateError('Это обязательное поле')
+        const error = this.generateError(domElements.popups.errors.requiredArea)
         this.form[i].parentElement.insertBefore(error, this.inputs[i].nextSibling)
       }
     }
@@ -123,8 +123,9 @@ export default class Popup {
 
   passChecker() {
     for (let i = 0; i < this.inputs.length; i += 1) {
-      if (this.inputs[i].validity.tooShort && this.inputs[i].name === 'password') {
-        const error = this.generateError('Длина пароля должна быть 8 или более символов')
+      if (this.inputs[i].validity.tooShort && this.inputs[i].name
+         === domElements.authForm.inputs.password) {
+        const error = this.generateError(domElements.popups.errors.passLength)
         this.form[i].parentElement.insertBefore(error, this.inputs[i].nextSibling)
         this.submitButtonDisabler()
       }
@@ -133,8 +134,9 @@ export default class Popup {
 
   nameChecker() {
     for (let i = 0; i < this.inputs.length; i += 1) {
-      if (this.inputs[i].validity.tooShort && this.inputs[i].name === 'name') {
-        const error = this.generateError('Имя должно быть не менее 2 символов')
+      if (this.inputs[i].validity.tooShort && this.inputs[i].name
+         === domElements.authForm.inputs.name) {
+        const error = this.generateError(domElements.popups.errors.nameLength)
         this.form[i].parentElement.insertBefore(error, this.inputs[i].nextSibling)
         this.submitButtonDisabler()
       }
@@ -143,10 +145,10 @@ export default class Popup {
 
   emailChecker() {
     for (let i = 0; i < this.inputs.length; i += 1) {
-      if (this.inputs[i].name === 'email') {
+      if (this.inputs[i].name === domElements.authForm.inputs.email) {
         const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
         if (reg.test(this.inputs[i].value) === false) {
-          const error = this.generateError('Введите корректный адрес e-mail')
+          const error = this.generateError(domElements.popups.errors.emailValidation)
           this.form[i].parentElement.insertBefore(error, this.inputs[i].nextSibling)
           this.submitButtonDisabler()
         }
@@ -156,7 +158,7 @@ export default class Popup {
 
 
   errorCheker() {
-    const errors = this.form.querySelectorAll('.auth-form__error-message')
+    const errors = this.form.querySelectorAll(`.${domElements.authForm.errorMessage}`)
     if (errors.length > 0) {
       this.submitButtonDisabler()
     } else {

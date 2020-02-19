@@ -6,7 +6,7 @@
 @import url(./__text/card__text.css);
 @import url(./__source/card__source.css);
 @import url(./__popup/card__popup.css);
-@import url(./__key/card__key.css);
+@import url(./__keyword/card__keyword.css);
 .card {
   background-color: white;
   display: flex;

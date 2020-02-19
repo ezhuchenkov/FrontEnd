@@ -1,7 +1,7 @@
 
 import Preloader from './preloader'
 import CardList from './cardList'
-import { resultSection, headerForm } from '../constants/config'
+import { resultSection, headerForm, domElements } from '../constants/config'
 
 export default class Results {
   constructor(apiMethod, options, title) {
@@ -10,8 +10,8 @@ export default class Results {
     this.options = options
     this.title = title
     if (this.headerForm) {
-      this.inputArea = this.headerForm.querySelector('.header__form-input')
-      this.findButton = this.headerForm.querySelector('.button')
+      this.inputArea = this.headerForm.querySelector(domElements.header.inputArea)
+      this.findButton = this.headerForm.querySelector(`.${domElements.button}`)
       this.headerForm.addEventListener('submit', (event) => this.takeNews(event))
     }
     this.isResults = this.isResults.bind(this)
@@ -29,15 +29,15 @@ export default class Results {
     const resultsNews = document.createElement('div')
     const resultsButton = document.createElement('button')
 
-    this.resultSection.classList.remove('results_hide')
-    resultsTitle.classList.add('title')
-    resultsTitle.textContent = 'Результаты поиска'
+    this.resultSection.classList.remove(domElements.results.hide)
+    resultsTitle.classList.add(domElements.results.title)
+    resultsTitle.textContent = domElements.results.titleText
     this.resultSection.appendChild(resultsTitle)
-    resultsNews.classList.add('results__news')
+    resultsNews.classList.add(domElements.results.news)
     this.resultSection.appendChild(resultsNews)
-    resultsButton.classList.add('button')
-    resultsButton.classList.add('results__button')
-    resultsButton.textContent = 'Показать еще'
+    resultsButton.classList.add(domElements.button)
+    resultsButton.classList.add(domElements.results.button)
+    resultsButton.textContent = domElements.results.buttonText
     this.resultSection.appendChild(resultsButton)
 
     resultsButton.addEventListener('click', () => this.takeMoreNews())
@@ -54,7 +54,7 @@ export default class Results {
   }
 
   noResults() {
-    this.resultSection.classList.add('results_hide')
+    this.resultSection.classList.add(domElements.results.hide)
     this.cleanResults()
   }
 
@@ -68,14 +68,14 @@ export default class Results {
   emptyInputErrorOn() {
     const inputErrorPopup = document.createElement('i')
 
-    inputErrorPopup.classList.add('header__form-input_error')
-    inputErrorPopup.textContent = 'Поле поиска не может быть пустым'
+    inputErrorPopup.classList.add(domElements.header.inputErrorPopup)
+    inputErrorPopup.textContent = domElements.header.inputErrorPopupText
     this.headerForm.appendChild(inputErrorPopup)
   }
 
   emptyInputErrorOff() {
-    if (this.headerForm.querySelector('.header__form-input_error')) {
-      this.headerForm.removeChild(this.headerForm.querySelector('.header__form-input_error'))
+    if (this.headerForm.querySelector(`.${domElements.header.inputErrorPopup}`)) {
+      this.headerForm.removeChild(this.headerForm.querySelector(`.${domElements.header.inputErrorPopup}`))
     }
   }
 
@@ -83,7 +83,7 @@ export default class Results {
   takeNews(event) {
     event.preventDefault()
     this.counter = 3
-    const request = document.querySelector('.header__form-input').value
+    const request = document.querySelector(domElements.header.inputArea).value
     if (request.length === 0) {
       this.emptyInputErrorOn()
       return
@@ -129,7 +129,7 @@ export default class Results {
     const delta = this.news.length - this.counter
     const volume = (delta) < this.showMoreNewsLimiter ? delta : this.showMoreNewsLimiter
     if (delta <= this.showMoreNewsLimiter) {
-      document.querySelector('.results__button').classList.add('button_hide')
+      document.querySelector(`.${domElements.results.button}`).classList.add(domElements.results.buttonHide)
     }
     for (let i = 0; i < volume; i += 1) {
       this.cardList.addCard(this.news[this.counter].source, this.news[this.counter].title,

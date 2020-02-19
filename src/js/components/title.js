@@ -1,15 +1,16 @@
 /* eslint-disable no-restricted-syntax */
 import '../../blocks/card/card.css'
+import { domElements } from '../constants/config'
 
 export default class Title {
   constructor(name, articles) {
     this.name = name
-    this.title = document.querySelector('.saved-articles__title')
-    this.keywords = document.querySelector('.saved-articles__keyword')
-    this.firstKeyWord = document.querySelector('.saved-articles__keyword_first')
-    this.secondKeyWord = document.querySelector('.saved-articles__keyword_second')
-    this.countKeyWord = document.querySelector('.saved-articles__keyword_count')
-    this.otherKeyWord = document.querySelector('.saved-articles__keyword_other')
+    this.title = document.querySelector(domElements.savedArticles.title)
+    this.keywords = document.querySelector(domElements.savedArticles.keywords)
+    this.firstKeyWord = document.querySelector(domElements.savedArticles.firstKeyWord)
+    this.secondKeyWord = document.querySelector(domElements.savedArticles.secondKeyWord)
+    this.countKeyWord = document.querySelector(domElements.savedArticles.countKeyWord)
+    this.otherKeyWord = document.querySelector(domElements.savedArticles.otherKeyWord)
     this.articles = articles
   }
 
@@ -23,7 +24,7 @@ export default class Title {
       [...data.data].forEach((item) => {
         arr.push(item.keyword)
       })
-      this.title.textContent = `${this.name}, ${data.data.length} у Вас сохраненных статей`
+      this.title.textContent = `${this.name}, у Вас ${data.data.length} сохраненных статей`
       const arr2 = []
       for (const i in arr) {
         if (arr2[arr[i]] !== undefined) {
@@ -49,9 +50,9 @@ export default class Title {
       }
       this.statUpdate(mostPopular.words, keysLength)
     })
-    // .catch((err) => {
-    //   console.log(err.message)
-    // })
+      .catch((err) => {
+        console.log(err.message)
+      })
   }
 
   statUpdate(mostPopular, keysLength) {

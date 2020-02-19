@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import '../../blocks/card/card.css'
-import { MAIN_PAGE, ARTICLES } from '../constants/config'
+import { MAIN_PAGE, ARTICLES, domElements } from '../constants/config'
 import MainApi from '../api/mainApi'
 
 export default class Card {
@@ -13,7 +13,7 @@ export default class Card {
     this.link = link
     this.keyword = keyword
     this.options = options
-    this.container = document.querySelector('.results__news')
+    this.container = document.querySelector(domElements.container)
   }
 
   create(id, titleRender) {
@@ -28,62 +28,62 @@ export default class Card {
     const cardSource = document.createElement('p')
     const noImage = '../../../images/noImage.png'
 
-    cardItem.classList.add('card')
+    cardItem.classList.add(domElements.card.card)
     cardItem.href = this.link
     this.container.appendChild(cardItem)
-    cardImage.classList.add('card__image')
+    cardImage.classList.add(domElements.card.cardImage)
     if (this.image) {
       cardImage.style = `background-image: url(${this.image})`
     } else {
       cardImage.style = `background-image: url(${noImage})`
     }
     cardItem.appendChild(cardImage)
-    cardPopup.classList.add('card__popup')
-    cardIcon.classList.add('card__icon')
+    cardPopup.classList.add(domElements.card.cardPopup)
+    cardIcon.classList.add(domElements.card.cardIcon)
     if (this.options.pageName === ARTICLES) {
-      cardIcon.classList.add('card__icon_delete')
-      cardPopup.textContent = 'Убрать из сохраненных'
+      cardIcon.classList.add(domElements.card.cardIconDelete)
+      cardPopup.textContent = domElements.card.cardPopupTextDelete
       cardIcon.addEventListener('click', (e) => {
         this.remove(e, id)
         titleRender.render()
         cardIcon.removeEventListener('click', this.remove)
       })
       const cardKeyword = document.createElement('i')
-      cardKeyword.classList.add('card__key')
+      cardKeyword.classList.add(domElements.card.cardKeyword)
       cardKeyword.textContent = this.keyword
       cardImage.appendChild(cardKeyword)
     } else if (this.options.pageName === MAIN_PAGE && this.options.isLoggedIn) {
-      cardPopup.textContent = 'Сохранить'
+      cardPopup.textContent = domElements.card.cardPopupTextSave
       cardIcon.addEventListener('click', (e) => this.iconListener(e, cardIcon), false)
     } else {
-      cardPopup.textContent = 'Войдите, чтобы сохранять статьи'
+      cardPopup.textContent = domElements.card.cardPopupTextLogin
     }
 
     cardImage.appendChild(cardIcon)
     cardImage.appendChild(cardPopup)
-    cardDescription.classList.add('card__description')
+    cardDescription.classList.add(domElements.card.cardDescription)
     cardItem.appendChild(cardDescription)
-    cardDate.classList.add('card__date')
+    cardDate.classList.add(domElements.card.cardDate)
     cardDate.textContent = this.date
     cardDescription.appendChild(cardDate)
-    cardTitle.classList.add('card__title')
+    cardTitle.classList.add(domElements.card.cardTitle)
     cardTitle.textContent = this.title
     cardDescription.appendChild(cardTitle)
-    cardText.classList.add('card__text')
+    cardText.classList.add(domElements.card.cardText)
     cardText.textContent = this.text
     cardDescription.appendChild(cardText)
-    cardSource.classList.add('card__source')
+    cardSource.classList.add(domElements.card.cardSource)
     cardSource.textContent = this.source
     cardItem.appendChild(cardSource)
   }
 
   iconListener(e, elem) {
-    if (e.target.classList.value === 'card__icon card__icon_add') {
+    if (e.target.classList.value === `${domElements.card.cardIcon} ${domElements.card.cardIconAdd}`) {
       this.unSave(e)
-      elem.classList.remove('card__icon_add')
+      elem.classList.remove(domElements.card.cardIconAdd)
     } else {
       this.save(e)
-      elem.classList.add('card__icon_add')
+      elem.classList.add(domElements.card.cardIconAdd)
     }
   }
 
@@ -91,7 +91,7 @@ export default class Card {
     e.preventDefault()
     new MainApi().removeArticle(id)
       .then(() => {
-        this.container.removeChild(e.target.closest('.card'))
+        this.container.removeChild(e.target.closest(`.${domElements.card.card}`))
       })
       .catch((err) => {
         throw new Error(err.message)

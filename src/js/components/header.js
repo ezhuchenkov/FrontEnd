@@ -1,12 +1,12 @@
 /* eslint-disable no-extra-boolean-cast */
-import { ARTICLES } from '../constants/config'
+import { ARTICLES, domElements } from '../constants/config'
 
 export default class Header {
   constructor(options) {
     this.options = options
-    this.userNameButton = document.querySelector('#username')
-    this.logoutIcon = document.querySelector('.menu__logout')
-    this.articlesButton = document.querySelector('#articles')
+    this.userNameButton = document.querySelector(domElements.header.userNameButton)
+    this.logoutIcon = document.querySelector(domElements.header.logoutIcon)
+    this.articlesButton = document.querySelector(domElements.header.articlesButton)
   }
 
   render(props) {

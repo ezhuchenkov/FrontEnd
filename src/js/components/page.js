@@ -5,7 +5,7 @@ import NewsApi from '../api/newsApi'
 import Results from './results'
 import MainApi from '../api/mainApi'
 import Header from './header'
-import { MAIN_PAGE, ARTICLES } from '../constants/config'
+import { MAIN_PAGE, ARTICLES, domElements } from '../constants/config'
 import Title from './title'
 
 export default class Page {
@@ -51,22 +51,24 @@ export default class Page {
 
   // добавить функцию addlistener
   addLiteners() {
-    document.querySelector('.menu__link_logged').addEventListener('click', () => {
-      this.logging()
-    })
-    document.querySelector('#signIn-form').addEventListener('click', (event) => {
+    this.addlistener(document.querySelector(domElements.menu.loggedLink), 'click', () => { this.logging() })
+    this.addlistener(document.querySelector(domElements.authForm.signin), 'click', (event) => {
       this.popupRegistration.close()
       this.popupSignUpSuccess.close()
       this.popupSignIn.open(event)
     })
-    document.querySelector('#registred-signIn-form').addEventListener('click', (event) => {
+    this.addlistener(document.querySelector(domElements.authForm.registredSignin), 'click', (event) => {
       this.popupSignUpSuccess.close()
       this.popupSignIn.open(event)
     })
-    document.querySelector('#signUp-form').addEventListener('click', (event) => {
+    this.addlistener(document.querySelector(domElements.authForm.signup), 'click', (event) => {
       this.popupSignIn.close()
       this.popupRegistration.open(event)
     })
+  }
+
+  addlistener(el, ev, fn) {
+    el.addEventListener(ev, fn)
   }
 
   logging() {

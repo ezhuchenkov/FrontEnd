@@ -1,5 +1,5 @@
 
-.card__key {
+.card__keyword {
   background-color: #fff;
   font-family: 'Roboto';
   font-style: normal;
@@ -18,14 +18,14 @@
 }
 
 @media screen and (max-width: 1023px) {
-  .card__key {
+  .card__keyword {
     top: 8px;
     left: 8px;
   }
 }
 
 @media screen and (max-width: 767px) {
-  .card__key {
+  .card__keyword {
     top: 16px;
     left: 16px;
   }

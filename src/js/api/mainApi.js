@@ -1,14 +1,12 @@
-import {
-  signUpUrl, signInUrl, articlesUrl, getUserInfoUrl, logoutUrl,
-} from '../constants/config'
+import { mainApiUrls } from '../constants/config'
 
 export default class MainApi {
   constructor() {
-    this.signUpUrl = signUpUrl
-    this.signInUrl = signInUrl
-    this.articlesUrl = articlesUrl
-    this.getUserInfoUrl = getUserInfoUrl
-    this.logoutUrl = logoutUrl
+    this.signUpUrl = mainApiUrls.signUpUrl
+    this.signInUrl = mainApiUrls.signInUrl
+    this.articlesUrl = mainApiUrls.articlesUrl
+    this.getUserInfoUrl = mainApiUrls.getUserInfoUrl
+    this.logoutUrl = mainApiUrls.logoutUrl
   }
 
   signUp(data) {

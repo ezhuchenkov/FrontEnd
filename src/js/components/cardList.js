@@ -1,9 +1,10 @@
 import Card from './card'
 import Article from './article'
+import { domElements } from '../constants/config'
 
 export default class CardList {
   constructor() {
-    this.container = document.querySelector('.results__news')
+    this.container = document.querySelector(domElements.container)
     this.cards = []
     this.articles = []
   }

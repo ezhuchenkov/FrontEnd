@@ -116,7 +116,7 @@ export default class Popup {
     for (let i = 0; i < this.inputs.length; i += 1) {
       if (!this.inputs[i].value || this.inputs[i].value.length === 0) {
         const error = this.generateError(domElements.popups.errors.requiredArea)
-        this.form[i].parentElement.insertBefore(error, this.inputs[i].nextSibling)
+        this.errorInput(i, error)
       }
     }
   }
@@ -124,10 +124,9 @@ export default class Popup {
   passChecker() {
     for (let i = 0; i < this.inputs.length; i += 1) {
       if (this.inputs[i].validity.tooShort && this.inputs[i].name
-         === domElements.authForm.inputs.password) {
+        === domElements.authForm.inputs.password) {
         const error = this.generateError(domElements.popups.errors.passLength)
-        this.form[i].parentElement.insertBefore(error, this.inputs[i].nextSibling)
-        this.submitButtonDisabler()
+        this.errorInput(i, error)
       }
     }
   }
@@ -135,10 +134,9 @@ export default class Popup {
   nameChecker() {
     for (let i = 0; i < this.inputs.length; i += 1) {
       if (this.inputs[i].validity.tooShort && this.inputs[i].name
-         === domElements.authForm.inputs.name) {
+        === domElements.authForm.inputs.name) {
         const error = this.generateError(domElements.popups.errors.nameLength)
-        this.form[i].parentElement.insertBefore(error, this.inputs[i].nextSibling)
-        this.submitButtonDisabler()
+        this.errorInput(i, error)
       }
     }
   }
@@ -149,13 +147,16 @@ export default class Popup {
         const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
         if (reg.test(this.inputs[i].value) === false) {
           const error = this.generateError(domElements.popups.errors.emailValidation)
-          this.form[i].parentElement.insertBefore(error, this.inputs[i].nextSibling)
-          this.submitButtonDisabler()
+          this.errorInput(i, error)
         }
       }
     }
   }
 
+  errorInput(i, error) {
+    this.form[i].parentElement.insertBefore(error, this.inputs[i].nextSibling)
+    this.submitButtonDisabler()
+  }
 
   errorCheker() {
     const errors = this.form.querySelectorAll(`.${domElements.authForm.errorMessage}`)

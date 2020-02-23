@@ -5,12 +5,16 @@ import NewsApi from '../api/newsApi'
 import Results from './results'
 import MainApi from '../api/mainApi'
 import Header from './header'
-import { MAIN_PAGE, ARTICLES, domElements } from '../constants/config'
+import { MAIN_PAGE, ARTICLES } from '../constants/config'
 import Title from './title'
+import BaseComponent from './baseComponent'
+import Preloader from './preloader'
 
-export default class Page {
+export default class Page extends BaseComponent {
   constructor(options) {
+    super()
     this.options = options
+    this.preloader = new Preloader()
     this.header = new Header(this.options)
     this.newsApi = new NewsApi()
     this.mainApi = new MainApi()
@@ -18,6 +22,7 @@ export default class Page {
       this.results = new Results(this.newsApi.getNews.bind(this.newsApi), {
         isLoggedIn: this.isLogged(),
         pageName: this.options.pageName,
+        preloader: this.preloader,
       })
     }
     if (this.options.pageName === ARTICLES) {
@@ -49,26 +54,21 @@ export default class Page {
     this.addLiteners()
   }
 
-  // добавить функцию addlistener
   addLiteners() {
-    this.addlistener(document.querySelector(domElements.menu.loggedLink), 'click', () => { this.logging() })
-    this.addlistener(document.querySelector(domElements.authForm.signin), 'click', (event) => {
+    this.addlistener(document.querySelector(this.domElements.menu.loggedLink), 'click', () => { this.logging() })
+    this.addlistener(document.querySelector(this.domElements.authForm.signin), 'click', (event) => {
       this.popupRegistration.close()
       this.popupSignUpSuccess.close()
       this.popupSignIn.open(event)
     })
-    this.addlistener(document.querySelector(domElements.authForm.registredSignin), 'click', (event) => {
+    this.addlistener(document.querySelector(this.domElements.authForm.registredSignin), 'click', (event) => {
       this.popupSignUpSuccess.close()
       this.popupSignIn.open(event)
     })
-    this.addlistener(document.querySelector(domElements.authForm.signup), 'click', (event) => {
+    this.addlistener(document.querySelector(this.domElements.authForm.signup), 'click', (event) => {
       this.popupSignIn.close()
       this.popupRegistration.open(event)
     })
-  }
-
-  addlistener(el, ev, fn) {
-    el.addEventListener(ev, fn)
   }
 
   logging() {

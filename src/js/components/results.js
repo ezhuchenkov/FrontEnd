@@ -1,22 +1,23 @@
 
-import Preloader from './preloader'
 import CardList from './cardList'
-import { resultSection, headerForm, domElements } from '../constants/config'
+import { resultSection, headerForm } from '../constants/config'
+import BaseComponent from './baseComponent'
 
-export default class Results {
+export default class Results extends BaseComponent {
   constructor(apiMethod, options, title) {
+    super()
     this.resultSection = resultSection
     this.headerForm = headerForm
     this.options = options
     this.title = title
+    this.preloader = this.options.preloader
     if (this.headerForm) {
-      this.inputArea = this.headerForm.querySelector(domElements.header.inputArea)
-      this.findButton = this.headerForm.querySelector(`.${domElements.button}`)
-      this.headerForm.addEventListener('submit', (event) => this.takeNews(event))
+      this.inputArea = this.headerForm.querySelector(this.domElements.header.inputArea)
+      this.findButton = this.headerForm.querySelector(`.${this.domElements.button}`)
+      this.addlistener(this.headerForm, 'submit', (event) => this.takeNews(event))
     }
     this.isResults = this.isResults.bind(this)
     this.noResults = this.noResults.bind(this)
-    this.preloader = new Preloader()
     this.cardList = new CardList()
     this.news = []
     this.apiMethod = apiMethod
@@ -29,15 +30,15 @@ export default class Results {
     const resultsNews = document.createElement('div')
     const resultsButton = document.createElement('button')
 
-    this.resultSection.classList.remove(domElements.results.hide)
-    resultsTitle.classList.add(domElements.results.title)
-    resultsTitle.textContent = domElements.results.titleText
+    this.resultSection.classList.remove(this.domElements.results.hide)
+    resultsTitle.classList.add(this.domElements.results.title)
+    resultsTitle.textContent = this.domElements.results.titleText
     this.resultSection.appendChild(resultsTitle)
-    resultsNews.classList.add(domElements.results.news)
+    resultsNews.classList.add(this.domElements.results.news)
     this.resultSection.appendChild(resultsNews)
-    resultsButton.classList.add(domElements.button)
-    resultsButton.classList.add(domElements.results.button)
-    resultsButton.textContent = domElements.results.buttonText
+    resultsButton.classList.add(this.domElements.button)
+    resultsButton.classList.add(this.domElements.results.button)
+    resultsButton.textContent = this.domElements.results.buttonText
     this.resultSection.appendChild(resultsButton)
 
     resultsButton.addEventListener('click', () => this.takeMoreNews())
@@ -54,7 +55,7 @@ export default class Results {
   }
 
   noResults() {
-    this.resultSection.classList.add(domElements.results.hide)
+    this.resultSection.classList.add(this.domElements.results.hide)
     this.cleanResults()
   }
 
@@ -68,14 +69,14 @@ export default class Results {
   emptyInputErrorOn() {
     const inputErrorPopup = document.createElement('i')
 
-    inputErrorPopup.classList.add(domElements.header.inputErrorPopup)
-    inputErrorPopup.textContent = domElements.header.inputErrorPopupText
+    inputErrorPopup.classList.add(this.domElements.header.inputErrorPopup)
+    inputErrorPopup.textContent = this.domElements.header.inputErrorPopupText
     this.headerForm.appendChild(inputErrorPopup)
   }
 
   emptyInputErrorOff() {
-    if (this.headerForm.querySelector(`.${domElements.header.inputErrorPopup}`)) {
-      this.headerForm.removeChild(this.headerForm.querySelector(`.${domElements.header.inputErrorPopup}`))
+    if (this.headerForm.querySelector(`.${this.domElements.header.inputErrorPopup}`)) {
+      this.headerForm.removeChild(this.headerForm.querySelector(`.${this.domElements.header.inputErrorPopup}`))
     }
   }
 
@@ -83,7 +84,7 @@ export default class Results {
   takeNews(event) {
     event.preventDefault()
     this.counter = 3
-    const request = document.querySelector(domElements.header.inputArea).value
+    const request = document.querySelector(this.domElements.header.inputArea).value
     if (request.length === 0) {
       this.emptyInputErrorOn()
       return
@@ -129,7 +130,7 @@ export default class Results {
     const delta = this.news.length - this.counter
     const volume = (delta) < this.showMoreNewsLimiter ? delta : this.showMoreNewsLimiter
     if (delta <= this.showMoreNewsLimiter) {
-      document.querySelector(`.${domElements.results.button}`).classList.add(domElements.results.buttonHide)
+      document.querySelector(`.${this.domElements.results.button}`).classList.add(this.domElements.results.buttonHide)
     }
     for (let i = 0; i < volume; i += 1) {
       this.cardList.addCard(this.news[this.counter].source, this.news[this.counter].title,

@@ -1,9 +1,3 @@
-// NewsApi configuration
-export const mainUrl = 'https://newsapi.org/v2/everything?'
-export const apiKey = 'apiKey=05ef796b6e4f4d7bb3e42754e27ddafe&'
-export const calculationDate = new Date(new Date() - (7 * 24 * 3600 * 1000))
-export const pageSize = 'pageSize=100'
-export const langOption = 'lang=ru&'
 
 // DOM-elemets configuration
 export const resultSection = document.querySelector('.results')
@@ -18,6 +12,15 @@ export const mainApiUrls = {
   articlesUrl: 'http://localhost:3000/articles',
   getUserInfoUrl: 'http://localhost:3000/users/me',
   logoutUrl: 'http://localhost:3000/logout',
+}
+
+// NewsApi configuration
+export const newsApiConfig = {
+  mainUrl: 'https://newsapi.org/v2/everything?',
+  apiKey: 'apiKey=05ef796b6e4f4d7bb3e42754e27ddafe&',
+  calculationDate: new Date(new Date() - (7 * 24 * 3600 * 1000)),
+  pageSize: 'pageSize=100',
+  langOption: 'lang=ru&',
 }
 
 
@@ -100,5 +103,26 @@ export const domElements = {
     hide: 'results_hide',
     title: 'title',
     titleText: 'Результаты поиска',
+  },
+  preloader: {
+    preloaderSection: '.preloader',
+    preloaderBox: 'preloader__box',
+    preloaderBoxIdCircle: 'preloaderCircle',
+    preloaderBoxIdNoNews: 'noNews',
+    preloaderBoxIdError: 'error',
+    preloaderCircle: 'preloader__circle',
+    preloaderSubtitle: 'preloader__subtitle',
+    preloaderSubtitleFindText: 'Идет поиск новостей...',
+    preloaderSubtitleNotFoundText: 'К сожалению по вашему запросу ничего не найдено.',
+    preloaderSubtitleErrorText: 'К сожалению по вашему запросу ничего не найдено.',
+    preloaderIcon: 'preloader__icon',
+    preloaderIconSrc: './images/not-found.svg',
+    preloaderIconAlt: 'Ничего не найдено.',
+    preloaderTitle: 'title',
+    preloaderTitleText: 'Ошибка',
+  },
+  overlay: {
+    overlay: '.overlay',
+    overlayOn: 'overlay_on',
   },
 }

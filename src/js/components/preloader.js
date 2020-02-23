@@ -1,8 +1,9 @@
 import '../../blocks/preloader/preloader.css'
+import { domElements } from '../constants/config'
 
 export default class Preloader {
   constructor() {
-    this.preloaderSection = document.querySelector('.preloader')
+    this.preloaderSection = document.querySelector(domElements.preloader.preloaderSection)
     this.circleOn = this.circleOn.bind(this)
     this.circleOff = this.circleOff.bind(this)
   }
@@ -12,18 +13,18 @@ export default class Preloader {
     const preloaderCircle = document.createElement('div')
     const preloaderSubtitle = document.createElement('h4')
 
-    preloaderBox.classList.add('preloader__box')
-    preloaderBox.id = 'preloaderCircle'
+    preloaderBox.classList.add(domElements.preloader.preloaderBox)
+    preloaderBox.id = domElements.preloader.preloaderBoxIdCircle
     this.preloaderSection.appendChild(preloaderBox)
-    preloaderCircle.classList.add('preloader__circle')
+    preloaderCircle.classList.add(domElements.preloader.preloaderCircle)
     preloaderBox.appendChild(preloaderCircle)
-    preloaderSubtitle.classList.add('preloader__subtitle')
-    preloaderSubtitle.textContent = 'Идет поиск новостей...'
+    preloaderSubtitle.classList.add(domElements.preloader.preloaderSubtitle)
+    preloaderSubtitle.textContent = domElements.preloader.preloaderSubtitleFindText
     preloaderBox.appendChild(preloaderSubtitle)
   }
 
   circleOff() {
-    const circleBox = (document.getElementById('preloaderCircle'))
+    const circleBox = document.getElementById(domElements.preloader.preloaderBoxIdCircle)
     this.preloaderSection.removeChild(circleBox)
   }
 
@@ -32,20 +33,20 @@ export default class Preloader {
     const preloaderIcon = document.createElement('img')
     const preloaderSubtitle = document.createElement('h4')
 
-    preloaderBox.classList.add('preloader__box')
-    preloaderBox.id = 'noNews'
+    preloaderBox.classList.add(domElements.preloader.preloaderBox)
+    preloaderBox.id = domElements.preloader.preloaderBoxIdNoNews
     this.preloaderSection.appendChild(preloaderBox)
-    preloaderIcon.classList.add('preloader__icon')
-    preloaderIcon.src = './images/not-found.svg'
-    preloaderIcon.alt = 'Ничего не найдено.'
+    preloaderIcon.classList.add(domElements.preloader.preloaderIcon)
+    preloaderIcon.src = domElements.preloader.preloaderIconSrc
+    preloaderIcon.alt = domElements.preloader.preloaderIconAlt
     preloaderBox.appendChild(preloaderIcon)
-    preloaderSubtitle.classList.add('preloader__subtitle')
-    preloaderSubtitle.textContent = 'К сожалению по вашему запросу ничего не найдено.'
+    preloaderSubtitle.classList.add(domElements.preloader.preloaderSubtitle)
+    preloaderSubtitle.textContent = domElements.preloader.preloaderSubtitleNotFoundText
     preloaderBox.appendChild(preloaderSubtitle)
   }
 
   noNewsOff() {
-    const noNewsBox = (document.getElementById('noNews'))
+    const noNewsBox = (document.getElementById(domElements.preloader.preloaderBoxIdNoNews))
     if (noNewsBox) {
       this.preloaderSection.removeChild(noNewsBox)
     }
@@ -56,19 +57,19 @@ export default class Preloader {
     const preloaderTitle = document.createElement('h2')
     const preloaderSubtitle = document.createElement('h4')
 
-    preloaderBox.classList.add('preloader__box')
-    preloaderBox.id = 'error'
+    preloaderBox.classList.add(domElements.preloader.preloaderBox)
+    preloaderBox.id = domElements.preloader.preloaderBoxIdError
     this.preloaderSection.appendChild(preloaderBox)
-    preloaderTitle.classList.add('title')
-    preloaderTitle.textContent = 'Ошибка'
+    preloaderTitle.classList.add(domElements.preloader.preloaderTitle)
+    preloaderTitle.textContent = domElements.preloader.preloaderTitleText
     preloaderBox.appendChild(preloaderTitle)
-    preloaderSubtitle.classList.add('preloader__subtitle')
-    preloaderSubtitle.textContent = 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.'
+    preloaderSubtitle.classList.add(domElements.preloader.preloaderSubtitle)
+    preloaderSubtitle.textContent = domElements.preloader.preloaderSubtitleErrorText
     preloaderBox.appendChild(preloaderSubtitle)
   }
 
   errorOff() {
-    const noNewsBox = (document.getElementById('error'))
+    const noNewsBox = (document.getElementById(domElements.preloader.preloaderBoxIdError))
     if (noNewsBox) {
       this.preloaderSection.removeChild(noNewsBox)
     }

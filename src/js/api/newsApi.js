@@ -1,15 +1,13 @@
-import {
-  mainUrl, apiKey, calculationDate, pageSize, langOption,
-} from '../constants/config'
+import { newsApiConfig } from '../constants/config'
 
 
 export default class NewsApi {
   constructor() {
-    this.mainUrl = mainUrl
-    this.apiKey = apiKey
-    this.calculationDate = calculationDate
-    this.pageSize = pageSize
-    this.langOption = langOption
+    this.mainUrl = newsApiConfig.mainUrl
+    this.apiKey = newsApiConfig.apiKey
+    this.calculationDate = newsApiConfig.calculationDate
+    this.pageSize = newsApiConfig.pageSize
+    this.langOption = newsApiConfig.langOption
   }
 
   getNews(request) {

@@ -1,13 +1,9 @@
 
-import CardList from './cardList'
-import { resultSection, headerForm } from '../constants/config'
 import BaseComponent from './baseComponent'
 
 export default class Results extends BaseComponent {
   constructor(apiMethod, options, title) {
     super()
-    this.resultSection = resultSection
-    this.headerForm = headerForm
     this.options = options
     this.title = title
     this.preloader = this.options.preloader
@@ -18,11 +14,10 @@ export default class Results extends BaseComponent {
     }
     this.isResults = this.isResults.bind(this)
     this.noResults = this.noResults.bind(this)
-    this.cardList = new CardList()
+    this.cardList = options.cardList
     this.news = []
     this.apiMethod = apiMethod
     this.counter = 3
-    this.showMoreNewsLimiter = 3
   }
 
   isResults() {
@@ -84,6 +79,7 @@ export default class Results extends BaseComponent {
   takeNews(event) {
     event.preventDefault()
     this.counter = 3
+    this.news = []
     const request = document.querySelector(this.domElements.header.inputArea).value
     if (request.length === 0) {
       this.emptyInputErrorOn()
@@ -113,7 +109,7 @@ export default class Results extends BaseComponent {
       } else {
         this.isResults()
         for (let i = 0; i < this.counter; i += 1) {
-          this.cardList.addCard(this.news[i].source, this.news[i].title, this.news[i].date,
+          this.cardList(this.news[i].source, this.news[i].title, this.news[i].date,
             this.news[i].text, this.news[i].image, this.news[i].link,
             this.news[i].keyword, this.options)
         }
@@ -133,7 +129,7 @@ export default class Results extends BaseComponent {
       document.querySelector(`.${this.domElements.results.button}`).classList.add(this.domElements.results.buttonHide)
     }
     for (let i = 0; i < volume; i += 1) {
-      this.cardList.addCard(this.news[this.counter].source, this.news[this.counter].title,
+      this.cardList(this.news[this.counter].source, this.news[this.counter].title,
         this.news[this.counter].date, this.news[this.counter].text,
         this.news[this.counter].image, this.news[this.counter].link,
         this.news[this.counter].keyword, this.options)
@@ -147,8 +143,8 @@ export default class Results extends BaseComponent {
         this.noResults()
       } else {
         Array.prototype.slice.apply(data.data).forEach((item) => {
-          this.cardList.addArticle(item._id, item.source, item.title, item.date,
-            item.text, item.image, item.link, item.keyword, this.options, this.title)
+          this.cardList(item._id, item.source, item.title, item.date,
+            item.text, item.image, item.link, item.keyword, this.options)
         })
       }
     })

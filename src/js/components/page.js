@@ -1,56 +1,19 @@
-/* eslint-disable class-methods-use-this */
-import Popup from './popup'
-// import Menu from './menu'
-import NewsApi from '../api/newsApi'
-import Results from './results'
-import MainApi from '../api/mainApi'
-import Header from './header'
-import { MAIN_PAGE, ARTICLES } from '../constants/config'
-import Title from './title'
+
 import BaseComponent from './baseComponent'
-import Preloader from './preloader'
 
 export default class Page extends BaseComponent {
   constructor(options) {
     super()
     this.options = options
-    this.preloader = new Preloader()
-    this.header = new Header(this.options)
-    this.newsApi = new NewsApi()
-    this.mainApi = new MainApi()
-    if (this.options.pageName === MAIN_PAGE) {
-      this.results = new Results(this.newsApi.getNews.bind(this.newsApi), {
-        isLoggedIn: this.isLogged(),
-        pageName: this.options.pageName,
-        preloader: this.preloader,
-      })
-    }
-    if (this.options.pageName === ARTICLES) {
-      this.title = new Title(localStorage.getItem('user'), this.mainApi.getArticles.bind(this.mainApi))
-      this.title.render()
-      this.results = new Results(this.mainApi.getArticles.bind(this.mainApi),
-        {
-          isLoggedIn: this.isLogged(),
-          pageName: this.options.pageName,
-        },
-        this.title.render.bind(this.title))
-        .renderArticles()
-    }
-    this.popupRegistration = new Popup(
-      options.popupRegistration,
-      this.mainApi.signUp.bind(this.mainApi),
-      this.header.render.bind(this.header),
-    )
-    this.popupSignIn = new Popup(
-      options.popupSignIn,
-      this.mainApi.signIn.bind(this.mainApi),
-      this.header.render.bind(this.header),
-    )
-    this.popupSignUpSuccess = new Popup(options.popupSignUpSuccess)
+    this.header = options.header
+    this.popupRegistration = options.popupRegistration
+    this.popupSignIn = options.popupSignIn
+    this.popupSignUpSuccess = options.popupSignUpSuccess
+    this.logout = options.logout
   }
 
   render() {
-    this.headerRender({ isLoggedIn: this.isLogged(), name: localStorage.getItem('user') })
+    this.header({ isLoggedIn: this.isLogged(), name: localStorage.getItem('user') })
     this.addLiteners()
   }
 
@@ -73,19 +36,11 @@ export default class Page extends BaseComponent {
 
   logging() {
     if (this.isLogged()) {
-      this.mainApi.logout()
+      this.logout()
       localStorage.clear()
-      this.headerRender({ isLoggedIn: false, name: null })
+      this.header({ isLoggedIn: false, name: null })
     } else {
       this.popupRegistration.open()
     }
-  }
-
-  isLogged() {
-    return Boolean(localStorage.getItem('user'))
-  }
-
-  headerRender(props) {
-    this.header.render(props)
   }
 }

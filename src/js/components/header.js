@@ -1,12 +1,9 @@
-/* eslint-disable no-extra-boolean-cast */
-import { ARTICLES, domElements } from '../constants/config'
+/* eslint-disable no-useless-constructor */
+import BaseComponent from './baseComponent'
 
-export default class Header {
-  constructor(options) {
-    this.options = options
-    this.userNameButton = document.querySelector(domElements.header.userNameButton)
-    this.logoutIcon = document.querySelector(domElements.header.logoutIcon)
-    this.articlesButton = document.querySelector(domElements.header.articlesButton)
+export default class Header extends BaseComponent {
+  constructor() {
+    super()
   }
 
   render(props) {
@@ -17,9 +14,6 @@ export default class Header {
       this.articlesLinkActivate()
     } else {
       this.articlesLinkDeactivate()
-      if (this.options.pageName === ARTICLES) {
-        window.location.replace('../')
-      }
     }
   }
 
@@ -40,5 +34,8 @@ export default class Header {
   articlesLinkDeactivate() {
     this.articlesButton.style.display = 'none'
     this.logoutIcon.style.display = 'none'
+    if (document.location.pathname === '/articles/') {
+      window.location.replace('../')
+    }
   }
 }

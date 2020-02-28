@@ -1,13 +1,13 @@
-/* eslint-disable no-unused-expressions */
 /* eslint-disable no-useless-escape */
 /* eslint-disable class-methods-use-this */
 import '../../blocks/popup/popup.css'
-import Overlay from './overlay'
 import { SIGNUP, SIGNIN, domElements } from '../constants/config'
+import BaseComponent from './baseComponent'
 
 
-export default class Popup {
-  constructor(popupID, mainApi, header) {
+export default class Popup extends BaseComponent {
+  constructor(popupID, mainApi, header, overlay, nextPopup) {
+    super()
     this.open = this.open.bind(this)
     this.generateError = this.generateError.bind(this)
     this.close = this.close.bind(this)
@@ -15,10 +15,11 @@ export default class Popup {
     this.validate = this.validate.bind(this)
     this.popupID = popupID
     this.popupClose = this.popupID.querySelector(`.${domElements.authForm.close}`)
-    this.overlay = new Overlay()
+    this.overlay = overlay
     this.mainApi = mainApi
     this.popupName = this.popupID.id
     this.header = header
+    this.nextPopup = nextPopup
 
     this.form = document.forms[this.popupName]
     this.inputs = []
@@ -35,24 +36,26 @@ export default class Popup {
     this.popupID.classList.remove(domElements.popups.popupHide)
     document.querySelector('#mobile-menu').style.display = 'none'
     this.overlay.on()
-    this.popupClose.addEventListener('click', this.close)
+    this.addlistener(this.popupClose, 'click', this.close)
     if (this.submitButton) {
-      this.submitButton.addEventListener('click', (event) => this.submit(event))
+      this.addlistener(this.submitButton, 'click', (e) => {
+        e.preventDefault()
+        this.submit()
+      })
     }
-    this.popupID.addEventListener('input', this.validate)
+    this.addlistener(this.popupID, 'input', this.validate)
   }
 
   close() {
     this.popupID.classList.add(domElements.popups.popupHide)
-    document.querySelector('#mobile-menu').style.display = 'block'
     this.overlay.off()
     this.popupClose.removeEventListener('click', this.close)
   }
 
-  submit(event) {
-    event.preventDefault()
+  submit() {
     if (this.popupName === SIGNUP) {
       this.singUpSubmit()
+      this.nextPopup.open()
     }
     if (this.popupName === SIGNIN) {
       this.singInSubmit()
@@ -66,6 +69,7 @@ export default class Popup {
       password: this.inputs[1].value,
     }
     this.mainApi(data)
+    this.close()
   }
 
   singInSubmit() {
@@ -75,7 +79,7 @@ export default class Popup {
     }
     this.mainApi(data)
       .then((res) => {
-        localStorage && localStorage.setItem('user', res.name)
+        localStorage.setItem('user', res.name)
         this.header({ isLoggedIn: true, name: res.name })
       })
     this.close()

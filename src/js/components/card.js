@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import '../../blocks/card/card.css'
-import { MAIN_PAGE, ARTICLES } from '../constants/config'
+import { MAIN_PAGE } from '../constants/config'
 import MainApi from '../api/mainApi'
 import BaseComponent from './baseComponent'
 
@@ -15,10 +15,9 @@ export default class Card extends BaseComponent {
     this.link = link
     this.keyword = keyword
     this.options = options
-    this.container = document.querySelector(this.domElements.container)
   }
 
-  create(id, titleRender) {
+  create(id, renderTitle) {
     const cardItem = document.createElement('a')
     const cardImage = document.createElement('div')
     const cardIcon = document.createElement('div')
@@ -42,20 +41,19 @@ export default class Card extends BaseComponent {
     cardItem.appendChild(cardImage)
     cardPopup.classList.add(this.domElements.card.cardPopup)
     cardIcon.classList.add(this.domElements.card.cardIcon)
-    if (this.options.pageName === ARTICLES) {
+    if (document.location.pathname === '/articles/') {
       cardIcon.classList.add(this.domElements.card.cardIconDelete)
       cardPopup.textContent = this.domElements.card.cardPopupTextDelete
       this.addlistener(cardIcon, 'click', (e) => {
-        this.remove(e, id)
-        titleRender.render()
-        cardIcon.removeEventListener('click', this.remove)
-      })
+        this.remove(e, id, renderTitle)
 
-      const cardKeyword = document.createElement('i')
-      cardKeyword.classList.add(this.domElements.card.cardKeyword)
-      cardKeyword.textContent = this.keyword
-      cardImage.appendChild(cardKeyword)
-    } else if (this.options.pageName === MAIN_PAGE && this.options.isLoggedIn) {
+        cardIcon.removeEventListener('click', this.remove)
+        const cardKeyword = document.createElement('i')
+        cardKeyword.classList.add(this.domElements.card.cardKeyword)
+        cardKeyword.textContent = this.keyword
+        cardImage.appendChild(cardKeyword)
+      })
+    } else if (this.isLogged) {
       cardPopup.textContent = this.domElements.card.cardPopupTextSave
       this.addlistener(cardIcon, 'click', (e) => this.iconListener(e, cardIcon))
     } else {
@@ -90,10 +88,11 @@ export default class Card extends BaseComponent {
     }
   }
 
-  remove(e, id) {
+  remove(e, id, renderTitle) {
     e.preventDefault()
     new MainApi().removeArticle(id)
       .then(() => {
+        renderTitle()
         this.container.removeChild(e.target.closest(`.${this.domElements.card.card}`))
       })
       .catch((err) => {

@@ -51,6 +51,8 @@ export const domElements = {
   },
   container: '.results__news',
   button: 'button',
+  resultSection: '.results',
+
   popups: {
     popupRegistration: '#signUp',
     popupSignUpSuccess: '#signUpSuccess',
@@ -91,6 +93,7 @@ export const domElements = {
     userNameButton: '#username',
     logoutIcon: '.menu__logout',
     articlesButton: '#articles',
+    headerForm: '.header__form',
     inputArea: '.header__form-input',
     inputErrorPopup: 'header__form-input_error',
     inputErrorPopupText: 'Поле поиска не может быть пустым',

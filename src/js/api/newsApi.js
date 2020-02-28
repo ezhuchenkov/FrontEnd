@@ -18,7 +18,7 @@ export default class NewsApi {
     return fetch(req)
       .then((res) => {
         if (res.ok) {
-          return res.json()
+          return res.clone().json()
         }
         return Promise.reject(new Error(`Ошибка: ${res.status}`))
       })

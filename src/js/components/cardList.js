@@ -1,22 +1,20 @@
+/* eslint-disable no-useless-constructor */
+/* eslint-disable no-empty-function */
+/* eslint-disable class-methods-use-this */
 import Card from './card'
 import Article from './article'
-import { domElements } from '../constants/config'
 
 export default class CardList {
-  constructor() {
-    this.container = document.querySelector(domElements.container)
-    this.cards = []
-    this.articles = []
+  constructor(title) {
+    this.title = title
   }
 
   addCard(source, title, date, text, image, link, keyword, options) {
-    const cardElement = new Card(source, title, date, text, image, link, keyword, options).create()
-    this.cards.push(cardElement)
+    new Card(source, title, date, text, image, link, keyword, options).create()
   }
 
-  addArticle(id, source, title, date, text, image, link, keyword, options, titleRender) {
-    const articleElement = new Article(id, source, title, date, text,
-      image, link, keyword, options, titleRender).create()
-    this.articles.push(articleElement)
+  addArticle(id, source, title, date, text, image, link, keyword, options) {
+    new Article(id, source, title, date, text,
+      image, link, keyword, options, this.title).create()
   }
 }

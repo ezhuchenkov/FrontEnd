@@ -1,7 +1,5 @@
 /* eslint-disable class-methods-use-this */
 import '../../blocks/card/card.css'
-import { MAIN_PAGE } from '../constants/config'
-import MainApi from '../api/mainApi'
 import BaseComponent from './baseComponent'
 
 export default class Card extends BaseComponent {
@@ -90,7 +88,7 @@ export default class Card extends BaseComponent {
 
   remove(e, id, renderTitle) {
     e.preventDefault()
-    new MainApi().removeArticle(id)
+    this.options.removeArticle(id)
       .then(() => {
         renderTitle()
         this.container.removeChild(e.target.closest(`.${this.domElements.card.card}`))
@@ -111,7 +109,11 @@ export default class Card extends BaseComponent {
       link: this.link,
       image: this.image,
     }
-    new MainApi().saveArticle(data)
+    this.options.saveArticle(data)
+      .then((res) => {
+        this.id = res
+        console.log(this.id)
+      })
       .catch((err) => {
         throw new Error(err.message)
       })
@@ -120,14 +122,14 @@ export default class Card extends BaseComponent {
   unSave(event) {
     event.preventDefault()
     const arr = []
-    new MainApi().getArticles()
+    this.options.getArticles()
       .then((res) => {
         [...res.data].forEach((item) => {
           arr.push(item)
         })
         arr.forEach((item) => {
           if (item.link === this.link) {
-            new MainApi().removeArticle(item._id)
+            this.options.removeArticle(item._id)
           }
         })
       })

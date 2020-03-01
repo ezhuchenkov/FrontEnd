@@ -18,6 +18,7 @@ export default class Results extends BaseComponent {
     this.news = []
     this.apiMethod = apiMethod
     this.counter = 3
+    this.showMoreNewsLimiter = 3
   }
 
   isResults() {

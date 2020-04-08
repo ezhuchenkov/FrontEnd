@@ -1,19 +1,21 @@
 /* eslint-disable class-methods-use-this */
 import '../../blocks/card/card.css'
 import BaseComponent from './baseComponent'
+import { ARTICLES } from '../constants/config'
 
 export default class Card extends BaseComponent {
   constructor(source, title, date, text, image, link, keyword, options) {
     super()
-    this.source = source
-    this.title = title
-    this.date = date
-    this.text = text
-    this.image = image
-    this.link = link
-    this.keyword = keyword
-    this.options = options
+    this._source = source
+    this._title = title
+    this._date = date
+    this._text = text
+    this._image = image
+    this._link = link
+    this._keyword = keyword
+    this._options = options
   }
+
 
   create(id, renderTitle) {
     const cardItem = document.createElement('a')
@@ -28,32 +30,32 @@ export default class Card extends BaseComponent {
     const noImage = '../../../images/noImage.png'
 
     cardItem.classList.add(this.domElements.card.card)
-    cardItem.href = this.link
+    cardItem.href = this._link
     this.container.appendChild(cardItem)
     cardImage.classList.add(this.domElements.card.cardImage)
-    if (this.image) {
-      cardImage.style = `background-image: url(${this.image})`
+    if (this._image) {
+      cardImage.style = `background-image: url(${this._image})`
     } else {
       cardImage.style = `background-image: url(${noImage})`
     }
     cardItem.appendChild(cardImage)
     cardPopup.classList.add(this.domElements.card.cardPopup)
     cardIcon.classList.add(this.domElements.card.cardIcon)
-    if (document.location.pathname === '/articles/') {
+    if (document.location.pathname === ARTICLES) {
       cardIcon.classList.add(this.domElements.card.cardIconDelete)
       cardPopup.textContent = this.domElements.card.cardPopupTextDelete
       this.addlistener(cardIcon, 'click', (e) => {
-        this.remove(e, id, renderTitle)
+        this._remove(e, id, renderTitle)
 
-        cardIcon.removeEventListener('click', this.remove)
+        cardIcon.removeEventListener('click', this._remove)
         const cardKeyword = document.createElement('i')
         cardKeyword.classList.add(this.domElements.card.cardKeyword)
-        cardKeyword.textContent = this.keyword
+        cardKeyword.textContent = this._keyword
         cardImage.appendChild(cardKeyword)
       })
-    } else if (this.isLogged) {
+    } else if (this.isLogged()) {
       cardPopup.textContent = this.domElements.card.cardPopupTextSave
-      this.addlistener(cardIcon, 'click', (e) => this.iconListener(e, cardIcon))
+      this.addlistener(cardIcon, 'click', (e) => this._iconListener(e, cardIcon))
     } else {
       cardPopup.textContent = this.domElements.card.cardPopupTextLogin
     }
@@ -63,32 +65,32 @@ export default class Card extends BaseComponent {
     cardDescription.classList.add(this.domElements.card.cardDescription)
     cardItem.appendChild(cardDescription)
     cardDate.classList.add(this.domElements.card.cardDate)
-    cardDate.textContent = this.date
+    cardDate.textContent = this._date
     cardDescription.appendChild(cardDate)
     cardTitle.classList.add(this.domElements.card.cardTitle)
-    cardTitle.textContent = this.title
+    cardTitle.textContent = this._title
     cardDescription.appendChild(cardTitle)
     cardText.classList.add(this.domElements.card.cardText)
-    cardText.textContent = this.text
+    cardText.textContent = this._text
     cardDescription.appendChild(cardText)
     cardSource.classList.add(this.domElements.card.cardSource)
-    cardSource.textContent = this.source
+    cardSource.textContent = this._source
     cardItem.appendChild(cardSource)
   }
 
-  iconListener(e, elem) {
+  _iconListener(e, elem) {
     if (e.target.classList.value === `${this.domElements.card.cardIcon} ${this.domElements.card.cardIconAdd}`) {
-      this.unSave(e)
+      this._unSave(e)
       elem.classList.remove(this.domElements.card.cardIconAdd)
     } else {
-      this.save(e)
+      this._save(e)
       elem.classList.add(this.domElements.card.cardIconAdd)
     }
   }
 
-  remove(e, id, renderTitle) {
+  _remove(e, id, renderTitle) {
     e.preventDefault()
-    this.options.removeArticle(id)
+    this._options.removeArticle(id)
       .then(() => {
         renderTitle()
         this.container.removeChild(e.target.closest(`.${this.domElements.card.card}`))
@@ -98,38 +100,37 @@ export default class Card extends BaseComponent {
       })
   }
 
-  save(e) {
+  _save(e) {
     e.preventDefault()
     const data = {
-      keyword: this.keyword,
-      title: this.title,
-      text: this.text,
-      date: this.date,
-      source: this.source,
-      link: this.link,
-      image: this.image,
+      keyword: this._keyword,
+      title: this._title,
+      text: this._text,
+      date: this._date,
+      source: this._source,
+      link: this._link,
+      image: this._image,
     }
-    this.options.saveArticle(data)
+    this._options.saveArticle(data)
       .then((res) => {
         this.id = res
-        console.log(this.id)
       })
       .catch((err) => {
         throw new Error(err.message)
       })
   }
 
-  unSave(event) {
+  _unSave(event) {
     event.preventDefault()
     const arr = []
-    this.options.getArticles()
+    this._options.getArticles()
       .then((res) => {
         [...res.data].forEach((item) => {
           arr.push(item)
         })
         arr.forEach((item) => {
-          if (item.link === this.link) {
-            this.options.removeArticle(item._id)
+          if (item.link === this._link) {
+            this._options.removeArticle(item._id)
           }
         })
       })

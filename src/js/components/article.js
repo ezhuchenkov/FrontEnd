@@ -4,11 +4,11 @@ import Card from './card'
 export default class Article extends Card {
   constructor(id, source, title, date, text, image, link, keyword, options, titleRender) {
     super(source, title, date, text, image, link, keyword, options)
-    this.id = id
-    this.titleRender = titleRender
+    this._id = id
+    this._titleRender = titleRender
   }
 
   create() {
-    super.create(this.id, this.titleRender)
+    super.create(this._id, this._titleRender)
   }
 }

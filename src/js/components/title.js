@@ -4,27 +4,27 @@ import { domElements } from '../constants/config'
 
 export default class Title {
   constructor(name, articles) {
-    this.name = name
-    this.title = document.querySelector(domElements.savedArticles.title)
-    this.keywords = document.querySelector(domElements.savedArticles.keywords)
-    this.firstKeyWord = document.querySelector(domElements.savedArticles.firstKeyWord)
-    this.secondKeyWord = document.querySelector(domElements.savedArticles.secondKeyWord)
-    this.countKeyWord = document.querySelector(domElements.savedArticles.countKeyWord)
-    this.otherKeyWord = document.querySelector(domElements.savedArticles.otherKeyWord)
-    this.articles = articles
+    this._name = name
+    this._title = document.querySelector(domElements.savedArticles.title)
+    this._keywords = document.querySelector(domElements.savedArticles.keywords)
+    this._firstKeyWord = document.querySelector(domElements.savedArticles.firstKeyWord)
+    this._secondKeyWord = document.querySelector(domElements.savedArticles.secondKeyWord)
+    this._countKeyWord = document.querySelector(domElements.savedArticles.countKeyWord)
+    this._otherKeyWord = document.querySelector(domElements.savedArticles.otherKeyWord)
+    this._articles = articles
   }
 
   render() {
-    this.popularWordsCounter()
+    this._popularWordsCounter()
   }
 
-  popularWordsCounter() {
+  _popularWordsCounter() {
     const arr = []
-    this.articles().then((data) => {
+    this._articles().then((data) => {
       [...data.data].forEach((item) => {
         arr.push(item.keyword)
       })
-      this.title.textContent = `${this.name}, у Вас ${data.data.length} сохраненных статей`
+      this._title.textContent = `${this._name}, у Вас ${data.data.length} сохраненных статей`
       const arr2 = []
       for (const i in arr) {
         if (arr2[arr[i]] !== undefined) {
@@ -48,34 +48,34 @@ export default class Title {
         mostPopular.max = 0
         mostPopular.key = ''
       }
-      this.statUpdate(mostPopular.words, keysLength)
+      this._statUpdate(mostPopular.words, keysLength)
     })
       .catch((err) => {
         console.log(err.message)
       })
   }
 
-  statUpdate(mostPopular, keysLength) {
+  _statUpdate(mostPopular, keysLength) {
     switch (keysLength) {
       case 0:
-        this.firstKeyWord.textContent = ''
-        this.otherKeyWord.style.display = 'none'
+        this._firstKeyWord.textContent = ''
+        this._otherKeyWord.style.display = 'none'
         break
       case 1:
-        this.firstKeyWord.textContent = mostPopular.shift()
-        this.secondKeyWord.textContent = ''
-        this.otherKeyWord.style.display = 'none'
+        this._firstKeyWord.textContent = mostPopular.shift()
+        this._secondKeyWord.textContent = ''
+        this._otherKeyWord.style.display = 'none'
         break
       case 2:
-        this.firstKeyWord.textContent = `${mostPopular.shift()},`
-        this.secondKeyWord.textContent = mostPopular.shift()
-        this.otherKeyWord.style.display = 'none'
+        this._firstKeyWord.textContent = `${mostPopular.shift()},`
+        this._secondKeyWord.textContent = mostPopular.shift()
+        this._otherKeyWord.style.display = 'none'
         break
       default:
-        this.firstKeyWord.textContent = `${mostPopular.shift()},`
-        this.secondKeyWord.textContent = mostPopular.shift()
-        this.countKeyWord.textContent = `и ${keysLength - 2}`
-        this.otherKeyWord.style.display = 'auto'
+        this._firstKeyWord.textContent = `${mostPopular.shift()},`
+        this._secondKeyWord.textContent = mostPopular.shift()
+        this._countKeyWord.textContent = `и ${keysLength - 2}`
+        this._otherKeyWord.style.display = 'auto'
     }
   }
 }

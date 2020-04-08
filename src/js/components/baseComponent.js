@@ -11,33 +11,22 @@ export default class BaseComponent {
     this.headerForm = document.querySelector(domElements.header.headerForm)
     this.container = document.querySelector(this.domElements.container)
     this.preloaderSection = document.querySelector(domElements.preloader.preloaderSection)
-
-    this.showMoreNewsLimiter = 3
+    this.menuItems = document.querySelector(this.domElements.menu.mobileMenuItem)
+    this.menuControl = document.querySelector(this.domElements.menu.mobileMenu)
+    this.menu = document.querySelector(this.domElements.menu.menu)
   }
 
-  /**
-   * Добавление слушателя на элемент
-   * @param  {node} el - элемент DOM
-   * @param  {string} ev - браузерное событие
-   * @param  {function} fn - исполняемая функция
-   */
+  // Добавление слушателя на элемент
   addlistener(el, ev, fn) {
     el.addEventListener(ev, fn)
   }
 
-  /**
-   * Удаление слушателя с элемента
-   * @param  {node} el - элемент DOM
-   * @param  {string} ev - браузерное событие
-   * @param  {function} fn - исполняемая функция
-   */
+  // Удаление слушателя с элемента
   removelistener(el, ev, fn) {
     el.removeEventListener(ev, fn)
   }
 
-  /**
- * Проверка того, залогинен ли пользователь
- */
+  // Проверка того, залогинен ли пользователь
   isLogged() {
     return Boolean(localStorage.getItem('user'))
   }

@@ -1,11 +1,10 @@
+/* eslint-disable no-useless-constructor */
 import '../../blocks/preloader/preloader.css'
 import BaseComponent from './baseComponent'
 
 export default class Preloader extends BaseComponent {
   constructor() {
     super()
-    this.circleOn = this.circleOn.bind(this)
-    this.circleOff = this.circleOff.bind(this)
   }
 
   circleOn() {

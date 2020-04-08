@@ -6,7 +6,7 @@ import Article from './article'
 
 export default class CardList {
   constructor(title) {
-    this.title = title
+    this._title = title
   }
 
   addCard(source, title, date, text, image, link, keyword, options) {
@@ -15,6 +15,6 @@ export default class CardList {
 
   addArticle(id, source, title, date, text, image, link, keyword, options) {
     new Article(id, source, title, date, text,
-      image, link, keyword, options, this.title).create()
+      image, link, keyword, options, this._title).create()
   }
 }

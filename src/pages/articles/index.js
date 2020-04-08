@@ -7,12 +7,17 @@ import MainApi from '../../js/api/mainApi'
 import Title from '../../js/components/title'
 import Header from '../../js/components/header'
 import CardList from '../../js/components/cardList'
+import Menu from '../../js/components/menu'
+import Overlay from '../../js/components/overlay'
 
+const isBlack = true
 const mainApi = new MainApi()
 const getArticles = mainApi.getArticles.bind(mainApi)
 const title = new Title(localStorage.getItem('user'), getArticles)
 title.render()
 const header = new Header()
+const overlay = new Overlay()
+const menu = new Menu(overlay, isBlack)
 const cardList = new CardList(title.render.bind(title))
 const result = new Results(getArticles,
   {
@@ -20,7 +25,6 @@ const result = new Results(getArticles,
     cardList: cardList.addArticle.bind(cardList),
     removeArticle: mainApi.removeArticle.bind(mainApi),
     getArticles,
-    saveArticle: mainApi.saveArticle.bind(mainApi),
   },
   title.render.bind(title)).renderArticles()
 
@@ -28,5 +32,10 @@ new Page(
   {
     header: header.render.bind(header),
     logout: mainApi.logout.bind(mainApi),
+    menu,
   },
 ).render()
+
+window.onresize = () => {
+  if (window.innerWidth > 767) menu.close()
+}

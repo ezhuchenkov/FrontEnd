@@ -1,46 +1,50 @@
 
 import BaseComponent from './baseComponent'
+import { MAIN_PAGE } from '../constants/config'
 
 export default class Page extends BaseComponent {
   constructor(options) {
     super()
-    this.options = options
-    this.header = options.header
-    this.popupRegistration = options.popupRegistration
-    this.popupSignIn = options.popupSignIn
-    this.popupSignUpSuccess = options.popupSignUpSuccess
-    this.logout = options.logout
+    this._header = options.header
+    this._popupRegistration = options.popupRegistration
+    this._popupSignIn = options.popupSignIn
+    this._popupSignUpSuccess = options.popupSignUpSuccess
+    this._logout = options.logout
+    this._menu = options.menu
   }
 
   render() {
-    this.header({ isLoggedIn: this.isLogged(), name: localStorage.getItem('user') })
-    this.addLiteners()
+    this._header({ isLoggedIn: this.isLogged(), name: localStorage.getItem('user') })
+    this._addLiteners()
   }
 
-  addLiteners() {
+  _addLiteners() {
     this.addlistener(document.querySelector(this.domElements.menu.loggedLink), 'click', () => { this.logging() })
-    this.addlistener(document.querySelector(this.domElements.authForm.signin), 'click', (event) => {
-      this.popupRegistration.close()
-      this.popupSignUpSuccess.close()
-      this.popupSignIn.open(event)
-    })
-    this.addlistener(document.querySelector(this.domElements.authForm.registredSignin), 'click', (event) => {
-      this.popupSignUpSuccess.close()
-      this.popupSignIn.open(event)
-    })
-    this.addlistener(document.querySelector(this.domElements.authForm.signup), 'click', (event) => {
-      this.popupSignIn.close()
-      this.popupRegistration.open(event)
-    })
+    this.addlistener(document.querySelector(this.domElements.menu.mobileMenu), 'click', () => { this._menu.click() })
+    if (document.location.pathname === MAIN_PAGE) {
+      this.addlistener(document.querySelector(this.domElements.authForm.signin), 'click', (event) => {
+        this._popupRegistration.close()
+        this._popupSignUpSuccess.close()
+        this._popupSignIn.open(event)
+      })
+      this.addlistener(document.querySelector(this.domElements.authForm.registredSignin), 'click', (event) => {
+        this._popupSignUpSuccess.close()
+        this._popupSignIn.open(event)
+      })
+      this.addlistener(document.querySelector(this.domElements.authForm.signup), 'click', (event) => {
+        this._popupSignIn.close()
+        this._popupRegistration.open(event)
+      })
+    }
   }
 
   logging() {
     if (this.isLogged()) {
-      this.logout()
+      this._logout()
       localStorage.clear()
-      this.header({ isLoggedIn: false, name: null })
+      this._header({ isLoggedIn: false, name: null })
     } else {
-      this.popupRegistration.open()
+      this._popupRegistration.open()
     }
   }
 }

@@ -1,27 +1,28 @@
-
+/* eslint-disable class-methods-use-this */
 import BaseComponent from './baseComponent'
+import { MONTHS } from '../constants/config'
 
 export default class Results extends BaseComponent {
   constructor(apiMethod, options, title) {
     super()
-    this.options = options
-    this.title = title
-    this.preloader = this.options.preloader
+    this._options = options
+    this._title = title
+    this._preloader = this._options.preloader
     if (this.headerForm) {
       this.inputArea = this.headerForm.querySelector(this.domElements.header.inputArea)
       this.findButton = this.headerForm.querySelector(`.${this.domElements.button}`)
-      this.addlistener(this.headerForm, 'submit', (event) => this.takeNews(event))
+      this.addlistener(this.headerForm, 'submit', (event) => this._takeNews(event))
     }
-    this.isResults = this.isResults.bind(this)
-    this.noResults = this.noResults.bind(this)
-    this.cardList = options.cardList
-    this.news = []
-    this.apiMethod = apiMethod
-    this.counter = 3
-    this.showMoreNewsLimiter = 3
+    this._isResults = this._isResults.bind(this)
+    this._noResults = this._noResults.bind(this)
+    this._cardList = options.cardList
+    this._news = []
+    this._apiMethod = apiMethod
+    this._counter = 3
+    this._showMoreNewsLimiter = 3
   }
 
-  isResults() {
+  _isResults() {
     const resultsTitle = document.createElement('h3')
     const resultsNews = document.createElement('div')
     const resultsButton = document.createElement('button')
@@ -37,32 +38,35 @@ export default class Results extends BaseComponent {
     resultsButton.textContent = this.domElements.results.buttonText
     this.resultSection.appendChild(resultsButton)
 
-    resultsButton.addEventListener('click', () => this.takeMoreNews())
+    resultsButton.addEventListener('click', () => {
+      console.log('1')
+      this._takeMoreNews()
+    })
   }
 
-  disableForm() {
+  _disableForm() {
     this.inputArea.setAttribute('disabled', true)
     this.findButton.setAttribute('disabled', true)
   }
 
-  enableForm() {
+  _enableForm() {
     this.inputArea.removeAttribute('disabled')
     this.findButton.removeAttribute('disabled')
   }
 
-  noResults() {
+  _noResults() {
     this.resultSection.classList.add(this.domElements.results.hide)
-    this.cleanResults()
+    this._cleanResults()
   }
 
-  cleanResults() {
-    this.counter = 3
+  _cleanResults() {
+    this._counter = 3
     while (this.resultSection.firstChild) {
       this.resultSection.removeChild(this.resultSection.firstChild)
     }
   }
 
-  emptyInputErrorOn() {
+  _emptyInputErrorOn() {
     const inputErrorPopup = document.createElement('i')
 
     inputErrorPopup.classList.add(this.domElements.header.inputErrorPopup)
@@ -70,34 +74,43 @@ export default class Results extends BaseComponent {
     this.headerForm.appendChild(inputErrorPopup)
   }
 
-  emptyInputErrorOff() {
+  _emptyInputErrorOff() {
     if (this.headerForm.querySelector(`.${this.domElements.header.inputErrorPopup}`)) {
       this.headerForm.removeChild(this.headerForm.querySelector(`.${this.domElements.header.inputErrorPopup}`))
     }
   }
 
+  _formatDate(IncomingDate) {
+    const date = new Date(IncomingDate)
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
 
-  takeNews(event) {
+    return `${day} ${MONTHS[month]}, ${year}`
+  }
+
+
+  _takeNews(event) {
     event.preventDefault()
-    this.counter = 3
-    this.news = []
+    this._counter = 3
+    this._news = []
     const request = document.querySelector(this.domElements.header.inputArea).value
     if (request.length === 0) {
-      this.emptyInputErrorOn()
+      this._emptyInputErrorOn()
       return
     }
-    this.disableForm()
-    this.emptyInputErrorOff()
-    this.preloader.circleOn()
-    this.preloader.noNewsOff()
-    this.preloader.errorOff()
-    this.cleanResults()
-    this.apiMethod(request).then((data) => {
+    this._disableForm()
+    this._emptyInputErrorOff()
+    this._preloader.circleOn()
+    this._preloader.noNewsOff()
+    this._preloader.errorOff()
+    this._cleanResults()
+    this._apiMethod(request).then((data) => {
       for (let i = 0; i < data.articles.length; i += 1) {
-        this.news.push({
+        this._news.push({
           source: data.articles[i].source.name,
           title: data.articles[i].title,
-          date: new Date(Date.parse(data.articles[i].publishedAt)),
+          date: this._formatDate(data.articles[i].publishedAt),
           text: data.articles[i].description,
           image: data.articles[i].urlToImage,
           link: data.articles[i].url,
@@ -105,17 +118,17 @@ export default class Results extends BaseComponent {
         })
       }
       if (data.length === 0) {
-        this.preloader.noNewsOn()
-        this.noResults()
+        this._preloader.noNewsOn()
+        this._noResults()
       } else {
-        this.isResults()
-        for (let i = 0; i < this.counter; i += 1) {
-          this.cardList(this.news[i].source, this.news[i].title, this.news[i].date,
-            this.news[i].text, this.news[i].image, this.news[i].link,
-            this.news[i].keyword, this.options)
+        this._isResults()
+        for (let i = 0; i < this._counter; i += 1) {
+          this._cardList(this._news[i].source, this._news[i].title, this._news[i].date,
+            this._news[i].text, this._news[i].image, this._news[i].link,
+            this._news[i].keyword, this._options)
         }
-        this.preloader.circleOff()
-        this.enableForm()
+        this._preloader.circleOff()
+        this._enableForm()
       }
     })
       .catch((err) => {
@@ -123,29 +136,29 @@ export default class Results extends BaseComponent {
       })
   }
 
-  takeMoreNews() {
-    const delta = this.news.length - this.counter
-    const volume = (delta) < this.showMoreNewsLimiter ? delta : this.showMoreNewsLimiter
-    if (delta <= this.showMoreNewsLimiter) {
+  _takeMoreNews() {
+    const delta = this._news.length - this._counter
+    const volume = (delta) < this._showMoreNewsLimiter ? delta : this._showMoreNewsLimiter
+    if (delta <= this._showMoreNewsLimiter) {
       document.querySelector(`.${this.domElements.results.button}`).classList.add(this.domElements.results.buttonHide)
     }
     for (let i = 0; i < volume; i += 1) {
-      this.cardList(this.news[this.counter].source, this.news[this.counter].title,
-        this.news[this.counter].date, this.news[this.counter].text,
-        this.news[this.counter].image, this.news[this.counter].link,
-        this.news[this.counter].keyword, this.options)
-      this.counter += 1
+      this._cardList(this._news[this._counter].source, this._news[this._counter].title,
+        this._news[this._counter].date, this._news[this._counter].text,
+        this._news[this._counter].image, this._news[this._counter].link,
+        this._news[this._counter].keyword, this._options)
+      this._counter += 1
     }
   }
 
   renderArticles() {
-    this.apiMethod().then((data) => {
+    this._apiMethod().then((data) => {
       if (data.data.length === 0) {
-        this.noResults()
+        this._noResults()
       } else {
         Array.prototype.slice.apply(data.data).forEach((item) => {
-          this.cardList(item._id, item.source, item.title, item.date,
-            item.text, item.image, item.link, item.keyword, this.options)
+          this._cardList(item._id, item.source, item.title, item.date,
+            item.text, item.image, item.link, item.keyword, this._options)
         })
       }
     })

@@ -3,18 +3,18 @@ import { newsApiConfig } from '../constants/config'
 
 export default class NewsApi {
   constructor() {
-    this.mainUrl = newsApiConfig.mainUrl
-    this.apiKey = newsApiConfig.apiKey
-    this.calculationDate = newsApiConfig.calculationDate
-    this.pageSize = newsApiConfig.pageSize
-    this.langOption = newsApiConfig.langOption
+    this._mainUrl = newsApiConfig.mainUrl
+    this._apiKey = newsApiConfig.apiKey
+    this._calculationDate = newsApiConfig.calculationDate
+    this._pageSize = newsApiConfig.pageSize
+    this._langOption = newsApiConfig.langOption
   }
 
   getNews(request) {
     const dateNow = new Date()
-    const dateFrom = `from=${this.calculationDate.getFullYear()}-${this.calculationDate.getMonth() + 1}-${this.calculationDate.getDate()}&`
+    const dateFrom = `from=${this._calculationDate.getFullYear()}-${this._calculationDate.getMonth() + 1}-${this._calculationDate.getDate()}&`
     const dateTo = `to=${dateNow.getFullYear()}-${dateNow.getMonth() + 1}-${dateNow.getDate()}&`
-    const req = new Request(`${this.mainUrl}${this.apiKey}q=${request}&${dateFrom}${dateTo}${this.langOption}${this.pageSize}`)
+    const req = new Request(`${this._mainUrl}${this._apiKey}q=${request}&${dateFrom}${dateTo}${this._langOption}${this._pageSize}`)
     return fetch(req)
       .then((res) => {
         if (res.ok) {

@@ -2,15 +2,15 @@ import { mainApiUrls } from '../constants/config'
 
 export default class MainApi {
   constructor() {
-    this.signUpUrl = mainApiUrls.signUpUrl
-    this.signInUrl = mainApiUrls.signInUrl
-    this.articlesUrl = mainApiUrls.articlesUrl
-    this.getUserInfoUrl = mainApiUrls.getUserInfoUrl
-    this.logoutUrl = mainApiUrls.logoutUrl
+    this._signUpUrl = mainApiUrls.signUpUrl
+    this._signInUrl = mainApiUrls.signInUrl
+    this._articlesUrl = mainApiUrls.articlesUrl
+    this._getUserInfoUrl = mainApiUrls.getUserInfoUrl
+    this._logoutUrl = mainApiUrls.logoutUrl
   }
 
   signUp(data) {
-    return fetch(this.signUpUrl,
+    return fetch(this._signUpUrl,
       {
         method: 'POST',
         headers: {
@@ -19,20 +19,11 @@ export default class MainApi {
         mode: 'cors',
         credentials: 'include',
         body: JSON.stringify(data),
-      })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(res.status)
-        }
-        return res.json()
-      })
-      .catch((err) => {
-        throw new Error(err.message)
       })
   }
 
   signIn(data) {
-    return fetch(this.signInUrl,
+    return fetch(this._signInUrl,
       {
         method: 'POST',
         headers: {
@@ -42,17 +33,10 @@ export default class MainApi {
         credentials: 'include',
         body: JSON.stringify(data),
       })
-      .then((res) => {
-        if (!res.ok) throw new Error(res.status)
-        return res.json()
-      })
-      .catch((err) => {
-        throw new Error(err.message)
-      })
   }
 
   getArticles() {
-    return fetch(this.articlesUrl,
+    return fetch(this._articlesUrl,
       { credentials: 'include' })
       .then((res) => {
         if (!res.ok) throw new Error(`Ошибка: ${res.status}`)
@@ -64,7 +48,7 @@ export default class MainApi {
   }
 
   getUserInfo() {
-    return fetch(this.getUserInfoUrl, { credentials: 'include' })
+    return fetch(this._getUserInfoUrl, { credentials: 'include' })
       .then((res) => {
         if (!res.ok) throw new Error(`Ошибка: ${res.status}`)
         return res.json()
@@ -76,7 +60,7 @@ export default class MainApi {
   }
 
   logout() {
-    return fetch(this.logoutUrl,
+    return fetch(this._logoutUrl,
       {
         method: 'POST',
         headers: {
@@ -95,7 +79,7 @@ export default class MainApi {
   }
 
   saveArticle(data) {
-    return fetch(this.articlesUrl,
+    return fetch(this._articlesUrl,
       {
         method: 'POST',
         headers: {
@@ -116,7 +100,7 @@ export default class MainApi {
   }
 
   removeArticle(id) {
-    return fetch(`${this.articlesUrl}/${id}`,
+    return fetch(`${this._articlesUrl}/${id}`,
       {
         method: 'DELETE',
         headers: {

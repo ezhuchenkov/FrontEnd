@@ -25,10 +25,11 @@ export const newsApiConfig = {
 
 
 // constants
-export const MAIN_PAGE = 'mainPage'
-export const ARTICLES = 'articles'
+export const MAIN_PAGE = '/'
+export const ARTICLES = '/articles/'
 export const SIGNUP = 'signUp'
 export const SIGNIN = 'signIn'
+export const MONTHS = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
 
 // DOM-elemets configuration
 export const domElements = {
@@ -54,6 +55,7 @@ export const domElements = {
   resultSection: '.results',
 
   popups: {
+    popup: '.popup',
     popupRegistration: '#signUp',
     popupSignUpSuccess: '#signUpSuccess',
     popupSignIn: '#signIn',
@@ -64,8 +66,14 @@ export const domElements = {
       nameLength: 'Имя должно быть не менее 2 символов',
       emailValidation: 'Введите корректный адрес e-mail',
     },
+    serverErrors: {
+      checked: 'Произошла ошибка обработки данных',
+      unchecked: 'Произошла непредваиденная ошибка',
+      unauthorized: 'Неправильный логин или пароль',
+    },
   },
   authForm: {
+    authForm: '.auth-form',
     signin: '#signIn-form',
     registredSignin: '#registred-signIn-form',
     signup: '#signUp-form',
@@ -87,7 +95,12 @@ export const domElements = {
     otherKeyWord: '.saved-articles__keyword_other',
   },
   menu: {
+    menu: '.menu',
     loggedLink: '.menu__link_logged',
+    mobileMenu: '.menu__mobile',
+    mobileMenuClose: 'menu__mobile_close',
+    mobileMenuCloseblack: 'menu__mobile_close_black',
+    mobileMenuItem: '.menu__items-list',
   },
   header: {
     userNameButton: '#username',

@@ -9,6 +9,7 @@ import MainApi from './js/api/mainApi'
 import Header from './js/components/header'
 import Popup from './js/components/popup'
 import CardList from './js/components/cardList'
+import Menu from './js/components/menu'
 import Overlay from './js/components/overlay'
 import { domElements } from './js/constants/config'
 
@@ -18,11 +19,7 @@ const preloader = new Preloader()
 const header = new Header()
 const cardList = new CardList()
 const overlay = new Overlay()
-new Results(newsApi.getNews.bind(newsApi), {
-  isLoggedIn: Boolean(localStorage.getItem('user')),
-  preloader,
-  cardList: cardList.addCard.bind(cardList),
-})
+const menu = new Menu(overlay)
 const popupSignUpSuccess = new Popup(document
   .querySelector(domElements.popups.popupSignUpSuccess), null, null, overlay, null)
 
@@ -41,6 +38,12 @@ const popupSignIn = new Popup(
   null,
 )
 
+new Results(newsApi.getNews.bind(newsApi), {
+  isLoggedIn: Boolean(localStorage.getItem('user')),
+  preloader,
+  cardList: cardList.addCard.bind(cardList),
+  saveArticle: mainApi.saveArticle.bind(mainApi),
+})
 new Page(
   {
     pageName: 'mainPage',
@@ -50,12 +53,10 @@ new Page(
     popupSignUpSuccess,
     header: header.render.bind(header),
     logout: mainApi.logout.bind(mainApi),
+    menu,
   },
 ).render()
-// const menu = new Menu(
-//   {
-//     control: '.menu__mobile',
-//     items: '.menu__items-list',
-//     menu: '.menu',
-//   },
-// )
+
+window.onresize = () => {
+  if (window.innerWidth > 767) menu.close()
+}

@@ -7,11 +7,11 @@ export const container = document.querySelector('.results__news')
 
 // BackEnd configuration
 export const mainApiUrls = {
-  signUpUrl: 'http://localhost:3000/signup',
-  signInUrl: 'http://localhost:3000/signin',
-  articlesUrl: 'http://localhost:3000/articles',
-  getUserInfoUrl: 'http://localhost:3000/users/me',
-  logoutUrl: 'http://localhost:3000/logout',
+  signUpUrl: 'http://api.notbadnews.tk/signup',
+  signInUrl: 'http://api.notbadnews.tk/signin',
+  articlesUrl: 'http://api.notbadnews.tk/articles',
+  getUserInfoUrl: 'http://api.notbadnews.tk/users/me',
+  logoutUrl: 'http://api.notbadnews.tk/logout',
 }
 
 // NewsApi configuration

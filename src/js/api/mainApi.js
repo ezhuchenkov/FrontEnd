@@ -42,7 +42,7 @@ export default class MainApi {
         if (!res.ok) throw new Error(`Ошибка: ${res.status}`)
         return res.json()
           .catch((err) => {
-            throw new Error(err.message)
+            console.log(err.message)
           })
       })
   }
@@ -55,7 +55,7 @@ export default class MainApi {
       })
       .then((userInfo) => userInfo.user)
       .catch((err) => {
-        throw new Error(err.message)
+        console.log(err.message)
       })
   }
 
@@ -73,8 +73,8 @@ export default class MainApi {
         if (!res.ok) throw new Error(`Ошибка: ${res.status}`)
         return res.json()
       })
-      .catch((e) => {
-        throw new Error(e.message)
+      .catch((err) => {
+        console.log(err.message)
       })
   }
 
@@ -95,7 +95,7 @@ export default class MainApi {
       })
       .then((res) => res._id)
       .catch((err) => {
-        throw new Error(err.message)
+        console.log(err.message)
       })
   }
 
@@ -114,7 +114,7 @@ export default class MainApi {
         return res.json()
       })
       .catch((err) => {
-        throw new Error(err.message)
+        console.log(err.message)
       })
   }
 }

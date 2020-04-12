@@ -43,6 +43,8 @@ new Results(newsApi.getNews.bind(newsApi), {
   preloader,
   cardList: cardList.addCard.bind(cardList),
   saveArticle: mainApi.saveArticle.bind(mainApi),
+  getArticles: mainApi.getArticles.bind(mainApi),
+  removeArticle: mainApi.removeArticle.bind(mainApi),
 })
 new Page(
   {
@@ -56,7 +58,3 @@ new Page(
     menu,
   },
 ).render()
-
-window.onresize = () => {
-  if (window.innerWidth > 767) menu.close()
-}

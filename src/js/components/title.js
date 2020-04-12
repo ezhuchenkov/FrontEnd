@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import '../../blocks/card/card.css'
-import { domElements } from '../constants/config'
+import { domElements, MAX_KEYWORDS } from '../constants/config'
 
 export default class Title {
   constructor(name, articles) {
@@ -35,7 +35,7 @@ export default class Title {
       }
       const mostPopular = { words: [], key: '', max: 0 }
       const keysLength = Array.from(Object.keys(arr2)).length
-      const attempts = keysLength >= 3 ? 3 : keysLength
+      const attempts = keysLength >= MAX_KEYWORDS ? MAX_KEYWORDS : keysLength
       for (let i = 0; i < attempts; i += 1) {
         Array.from(Object.keys(arr2)).forEach((item) => {
           if (mostPopular.max < arr2[item]) {
@@ -50,9 +50,6 @@ export default class Title {
       }
       this._statUpdate(mostPopular.words, keysLength)
     })
-      .catch((err) => {
-        console.log(err.message)
-      })
   }
 
   _statUpdate(mostPopular, keysLength) {

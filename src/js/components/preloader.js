@@ -13,7 +13,7 @@ export default class Preloader extends BaseComponent {
     const preloaderSubtitle = document.createElement('h4')
 
     preloaderBox.classList.add(this.domElements.preloader.preloaderBox)
-    preloaderBox.id = this.domElements.preloader.preloaderBoxIdCircle
+    preloaderBox.classList.add(this.domElements.preloader.preloaderBoxCircle)
     this.preloaderSection.appendChild(preloaderBox)
     preloaderCircle.classList.add(this.domElements.preloader.preloaderCircle)
     preloaderBox.appendChild(preloaderCircle)
@@ -23,7 +23,7 @@ export default class Preloader extends BaseComponent {
   }
 
   circleOff() {
-    const circleBox = document.getElementById(this.domElements.preloader.preloaderBoxIdCircle)
+    const circleBox = document.querySelector(`.${this.domElements.preloader.preloaderBoxCircle}`)
     this.preloaderSection.removeChild(circleBox)
   }
 
@@ -33,7 +33,7 @@ export default class Preloader extends BaseComponent {
     const preloaderSubtitle = document.createElement('h4')
 
     preloaderBox.classList.add(this.domElements.preloader.preloaderBox)
-    preloaderBox.id = this.domElements.preloader.preloaderBoxIdNoNews
+    preloaderBox.classList.add(this.domElements.preloader.preloaderBoxNoNews)
     this.preloaderSection.appendChild(preloaderBox)
     preloaderIcon.classList.add(this.domElements.preloader.preloaderIcon)
     preloaderIcon.src = this.domElements.preloader.preloaderIconSrc
@@ -45,7 +45,7 @@ export default class Preloader extends BaseComponent {
   }
 
   noNewsOff() {
-    const noNewsBox = (document.getElementById(this.domElements.preloader.preloaderBoxIdNoNews))
+    const noNewsBox = document.querySelector(`.${this.domElements.preloader.preloaderBoxNoNews}`)
     if (noNewsBox) {
       this.preloaderSection.removeChild(noNewsBox)
     }
@@ -57,7 +57,7 @@ export default class Preloader extends BaseComponent {
     const preloaderSubtitle = document.createElement('h4')
 
     preloaderBox.classList.add(this.domElements.preloader.preloaderBox)
-    preloaderBox.id = this.domElements.preloader.preloaderBoxIdError
+    preloaderBox.classList.add(this.domElements.preloader.preloaderBoxError)
     this.preloaderSection.appendChild(preloaderBox)
     preloaderTitle.classList.add(this.domElements.preloader.preloaderTitle)
     preloaderTitle.textContent = this.domElements.preloader.preloaderTitleText
@@ -68,7 +68,7 @@ export default class Preloader extends BaseComponent {
   }
 
   errorOff() {
-    const noNewsBox = (document.getElementById(this.domElements.preloader.preloaderBoxIdError))
+    const noNewsBox = document.querySelector(`.${this.domElements.preloader.preloaderBoxError}`)
     if (noNewsBox) {
       this.preloaderSection.removeChild(noNewsBox)
     }

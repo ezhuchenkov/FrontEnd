@@ -7,18 +7,30 @@ export const container = document.querySelector('.results__news')
 
 // BackEnd configuration
 export const mainApiUrls = {
-  signUpUrl: 'http://api.notbadnews.tk/signup',
-  signInUrl: 'http://api.notbadnews.tk/signin',
-  articlesUrl: 'http://api.notbadnews.tk/articles',
-  getUserInfoUrl: 'http://api.notbadnews.tk/users/me',
-  logoutUrl: 'http://api.notbadnews.tk/logout',
+  signUpUrl: 'http://localhost:3000/signup',
+  signInUrl: 'http://localhost:3000/signin',
+  articlesUrl: 'http://localhost:3000/articles',
+  getUserInfoUrl: 'http://localhost:3000/users/me',
+  logoutUrl: 'http://localhost:3000/logout',
 }
+// export const mainApiUrls = {
+//   signUpUrl: 'http://api.notbadnews.tk/signup',
+//   signInUrl: 'http://api.notbadnews.tk/signin',
+//   articlesUrl: 'http://api.notbadnews.tk/articles',
+//   getUserInfoUrl: 'http://api.notbadnews.tk/users/me',
+//   logoutUrl: 'http://api.notbadnews.tk/logout',
+// }
 
 // NewsApi configuration
+const DAYS_IN_WEEK = 7
+const HOURS_IN_DAY = 24
+const SEC_IN_HOUR = 3600
+const MS_IN_SEC = 1000
+const WEEK_IN_MS = DAYS_IN_WEEK * HOURS_IN_DAY * SEC_IN_HOUR * MS_IN_SEC
 export const newsApiConfig = {
   mainUrl: 'https://newsapi.org/v2/everything?',
   apiKey: 'apiKey=05ef796b6e4f4d7bb3e42754e27ddafe&',
-  calculationDate: new Date(new Date() - (7 * 24 * 3600 * 1000)),
+  calculationDate: new Date(new Date() - WEEK_IN_MS),
   pageSize: 'pageSize=100',
   langOption: 'lang=ru&',
 }
@@ -30,6 +42,10 @@ export const ARTICLES = '/articles/'
 export const SIGNUP = 'signUp'
 export const SIGNIN = 'signIn'
 export const MONTHS = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
+export const MOBILE_VIEW_SIZE = 767
+export const ESCAPE_BUTTON_KEYCODE = 27
+export const MAX_KEYWORDS = 3
+
 
 // DOM-elemets configuration
 export const domElements = {
@@ -123,9 +139,9 @@ export const domElements = {
   preloader: {
     preloaderSection: '.preloader',
     preloaderBox: 'preloader__box',
-    preloaderBoxIdCircle: 'preloaderCircle',
-    preloaderBoxIdNoNews: 'noNews',
-    preloaderBoxIdError: 'error',
+    preloaderBoxCircle: 'preloader__box_preloaderCircle',
+    preloaderBoxNoNews: 'preloader__box_noNews',
+    preloaderBoxError: 'preloader__box_error',
     preloaderCircle: 'preloader__circle',
     preloaderSubtitle: 'preloader__subtitle',
     preloaderSubtitleFindText: 'Идет поиск новостей...',

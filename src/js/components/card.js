@@ -31,7 +31,6 @@ export default class Card extends BaseComponent {
 
     cardItem.classList.add(this.domElements.card.card)
     cardItem.href = this._link
-    this.container.appendChild(cardItem)
     cardImage.classList.add(this.domElements.card.cardImage)
     if (this._image) {
       cardImage.style = `background-image: url(${this._image})`
@@ -76,15 +75,18 @@ export default class Card extends BaseComponent {
     cardSource.classList.add(this.domElements.card.cardSource)
     cardSource.textContent = this._source
     cardItem.appendChild(cardSource)
+    this.container.appendChild(cardItem)
   }
 
   _iconListener(e, elem) {
     if (e.target.classList.value === `${this.domElements.card.cardIcon} ${this.domElements.card.cardIconAdd}`) {
-      this._unSave(e)
-      elem.classList.remove(this.domElements.card.cardIconAdd)
+      this._unSave(e).then(() => {
+        elem.classList.remove(this.domElements.card.cardIconAdd)
+      })
     } else {
-      this._save(e)
-      elem.classList.add(this.domElements.card.cardIconAdd)
+      this._save(e).then((res) => {
+        if (res) { elem.classList.add(this.domElements.card.cardIconAdd) }
+      })
     }
   }
 
@@ -94,9 +96,6 @@ export default class Card extends BaseComponent {
       .then(() => {
         renderTitle()
         this.container.removeChild(e.target.closest(`.${this.domElements.card.card}`))
-      })
-      .catch((err) => {
-        throw new Error(err.message)
       })
   }
 
@@ -111,19 +110,13 @@ export default class Card extends BaseComponent {
       link: this._link,
       image: this._image,
     }
-    this._options.saveArticle(data)
-      .then((res) => {
-        this.id = res
-      })
-      .catch((err) => {
-        throw new Error(err.message)
-      })
+    return this._options.saveArticle(data)
   }
 
   _unSave(event) {
     event.preventDefault()
     const arr = []
-    this._options.getArticles()
+    return this._options.getArticles()
       .then((res) => {
         [...res.data].forEach((item) => {
           arr.push(item)
@@ -133,9 +126,6 @@ export default class Card extends BaseComponent {
             this._options.removeArticle(item._id)
           }
         })
-      })
-      .catch((err) => {
-        throw new Error(err.message)
       })
   }
 }

@@ -30,7 +30,7 @@ export default class Menu extends BaseComponent {
     this._isOpened = true
   }
 
-  _close() {
+  close() {
     this.menuControl.classList.remove(this.domElements.menu.mobileMenuClose)
     if (this._isBlack) this.menuControl.classList.remove(this.domElements.menu.mobileMenuCloseblack)
     this._overlay.off()

@@ -39,7 +39,6 @@ export default class Results extends BaseComponent {
     this.resultSection.appendChild(resultsButton)
 
     resultsButton.addEventListener('click', () => {
-      console.log('1')
       this._takeMoreNews()
     })
   }
@@ -66,17 +65,21 @@ export default class Results extends BaseComponent {
     }
   }
 
-  _emptyInputErrorOn() {
+  _checkEmptyInputError(request) {
+    if (request.length !== 0) {
+      return false
+    }
     const inputErrorPopup = document.createElement('i')
-
     inputErrorPopup.classList.add(this.domElements.header.inputErrorPopup)
     inputErrorPopup.textContent = this.domElements.header.inputErrorPopupText
     this.headerForm.appendChild(inputErrorPopup)
+    return true
   }
 
   _emptyInputErrorOff() {
-    if (this.headerForm.querySelector(`.${this.domElements.header.inputErrorPopup}`)) {
-      this.headerForm.removeChild(this.headerForm.querySelector(`.${this.domElements.header.inputErrorPopup}`))
+    const inputErrorPopup = this.headerForm.querySelector(`.${this.domElements.header.inputErrorPopup}`)
+    if (inputErrorPopup) {
+      this.headerForm.removeChild(inputErrorPopup)
     }
   }
 
@@ -92,13 +95,10 @@ export default class Results extends BaseComponent {
 
   _takeNews(event) {
     event.preventDefault()
+    const request = this.inputArea.value
     this._counter = 3
     this._news = []
-    const request = document.querySelector(this.domElements.header.inputArea).value
-    if (request.length === 0) {
-      this._emptyInputErrorOn()
-      return
-    }
+    if (this._checkEmptyInputError(request)) { return }
     this._disableForm()
     this._emptyInputErrorOff()
     this._preloader.circleOn()
@@ -106,17 +106,17 @@ export default class Results extends BaseComponent {
     this._preloader.errorOff()
     this._cleanResults()
     this._apiMethod(request).then((data) => {
-      for (let i = 0; i < data.articles.length; i += 1) {
+      [...data.articles].forEach((item) => {
         this._news.push({
-          source: data.articles[i].source.name,
-          title: data.articles[i].title,
-          date: this._formatDate(data.articles[i].publishedAt),
-          text: data.articles[i].description,
-          image: data.articles[i].urlToImage,
-          link: data.articles[i].url,
+          source: item.source.name,
+          title: item.title,
+          date: this._formatDate(item.publishedAt),
+          text: item.description,
+          image: item.urlToImage,
+          link: item.url,
           keyword: request,
         })
-      }
+      })
       if (data.length === 0) {
         this._preloader.noNewsOn()
         this._noResults()
@@ -131,9 +131,6 @@ export default class Results extends BaseComponent {
         this._enableForm()
       }
     })
-      .catch((err) => {
-        console.log(err.message)
-      })
   }
 
   _takeMoreNews() {
@@ -162,8 +159,5 @@ export default class Results extends BaseComponent {
         })
       }
     })
-      .catch((err) => {
-        console.log(err.message)
-      })
   }
 }

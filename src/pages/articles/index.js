@@ -35,7 +35,3 @@ new Page(
     menu,
   },
 ).render()
-
-window.onresize = () => {
-  if (window.innerWidth > 767) menu.close()
-}

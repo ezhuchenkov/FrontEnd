@@ -2,7 +2,9 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable class-methods-use-this */
 import '../../blocks/popup/popup.css'
-import { SIGNUP, SIGNIN, domElements } from '../constants/config'
+import {
+  SIGNUP, SIGNIN, ESCAPE_BUTTON_KEYCODE, domElements,
+} from '../constants/config'
 import BaseComponent from './baseComponent'
 
 
@@ -36,34 +38,62 @@ export default class Popup extends BaseComponent {
   open() {
     this._popupID.classList.remove(domElements.popups.popupHide)
     this._overlay.on()
-    this.addlistener(document.querySelector(this.domElements.popups.popup), 'click', (event) => {
-      const { target } = event
-      if (target === document.querySelector(this.domElements.authForm.authForm)
-        || target.closest('form')) {
-        return
-      }
-      this.close()
+    this.addListeners()
+  }
+
+  addListeners() {
+    this.addlistener(this._form.closest(this.domElements.popups.popup), 'click', (event) => {
+      this._handleClose(event)
     })
     window.addEventListener('keydown', (e) => {
-      const { keyCode } = e
-      if (keyCode === 27) {
-        this.close()
-      }
+      this._handleEscapeClose(e)
     })
     this.addlistener(this._popupClose, 'click', this.close)
     if (this._submitButton) {
-      this.addlistener(this._submitButton, 'click', (e) => {
-        e.preventDefault()
-        this._submit()
-      })
+      this.addlistener(this._submitButton, 'click', (e) => { this._onSubmit(e) })
     }
     this.addlistener(this._popupID, 'input', this._validate)
+  }
+
+  removeListeners() {
+    this.removelistener(this._form.closest(this.domElements.popups.popup), 'click', (event) => {
+      this._handleClose(event)
+    })
+    window.removeEventListener('keydown', (e) => {
+      this._handleEscapeClose(e)
+    })
+    this._popupClose.removeEventListener('click', this.close)
+    if (this._submitButton) {
+      this.removelistener(this._submitButton, 'click', (e) => { this._onSubmit(e) })
+    }
+    this.removelistener(this._popupID, 'input', this._validate)
+  }
+
+  _onSubmit(e) {
+    e.preventDefault()
+    this._submit()
   }
 
   close() {
     this._popupID.classList.add(domElements.popups.popupHide)
     this._overlay.off()
-    this._popupClose.removeEventListener('click', this.close)
+    this.removeListeners()
+  }
+
+  _handleClose(event) {
+    const { target } = event
+    if (target === document.querySelector(this.domElements.authForm.authForm)
+      || target.closest('form')) {
+      return
+    }
+    this.close()
+  }
+
+  _handleEscapeClose(e) {
+    const { keyCode } = e
+    if (keyCode === ESCAPE_BUTTON_KEYCODE) {
+      this.close()
+    }
   }
 
   _submit() {
@@ -82,7 +112,7 @@ export default class Popup extends BaseComponent {
         .catch((err) => {
           const error = this._generateError(domElements.popups.serverErrors.unchecked)
           this._serverErrorInput(error)
-          throw new Error(err.message)
+          console.log(err.message)
         })
     }
     if (this._popupName === SIGNIN) {
@@ -107,7 +137,7 @@ export default class Popup extends BaseComponent {
         .catch((err) => {
           const error = this._generateError(domElements.popups.serverErrors.unchecked)
           this._serverErrorInput(error)
-          throw new Error(err.message)
+          console.log(err.message)
         })
     }
   }
@@ -141,7 +171,7 @@ export default class Popup extends BaseComponent {
   _generateError(text) {
     const error = document.createElement('span')
     error.className = domElements.authForm.errorMessage
-    error.innerHTML = text
+    error.textContent = text
     return error
   }
 

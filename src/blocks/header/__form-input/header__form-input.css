@@ -1,4 +1,7 @@
+@import url(./_error/header__form-input_error.css);
+
 .header__form-input {
+  position: relative;
   margin-left: 30px;
   background-color: white;
   box-sizing: border-box;

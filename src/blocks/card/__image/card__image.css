@@ -2,11 +2,11 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-image: url(../../../images/bg.png);
   height: 272px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   position: relative;
+  background-image: url('../../../images/noImage.png');
 }
 
 @media screen and (max-width: 1023px) {
